@@ -1,1 +1,92 @@
-"Hello World" 
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+ 
+  <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.7/"></script>
+   <script>
+      require(["esri/config", 
+      "esri/Basemap",
+      "esri/layers/MapImageLayer", 
+      "esri/Map", 
+      "esri/identity/OAuthInfo",
+      "esri/identity/IdentityManager",
+      "esri/views/MapView",
+      "esri/geometry/support/webMercatorUtils",
+      "dojo/dom",
+      "dojo/domReady!"],
+       function(esriConfig, Basemap, MapImageLayer, Map, OAuthInfo, IdentityManager, MapView, webMercatorUtils, dom) {
+        esriConfig.apiKey = "AAPK93bc84cd5b674ab8bb0e62244e9954fdcpqTr8mn7recL0e1lS5Gq1L-UGExyM-tRT_AFO58Ccz0KdBhCj2UtOZ5fCk_VNo8";
+        const portalURL = "https://3utech.maps.arcgis.com/";
+        const info = new OAuthInfo({
+          appId:"rk8iv7RlhIZbmkfn",  //Client ID
+          popup: true
+        })
+        IdentityManager.registerOAuthInfos([info]);
+        // send users to arcgis.com to login
+        IdentityManager.getCredential(portalURL);
+        IdentityManager.checkSignInStatus(portalURL).then(function() {
+          mapImageLayer = new MapImageLayer({
+            portalItem: {
+              id: "5cbd464c75a3444592f1dbd28d04af98"  //NOAA ENC
+            //id: "1b243539f4514b6ba35e7d995890db1d" // World Hillshade
+            }
+          });
+          //basemap = new Basemap({
+            //baseLayers: [mapImageLayer],
+            //portalItem: {
+            //id: "5cbd464c75a3444592f1dbd28d04af98"  //NOAA ENC
+              //id: "8dda0e7b5e2d4fafa80132d59122268c"  // WGS84 Streets Vector webmap
+             //}
+          //});
+          const map = new Map({
+            basemap: "oceans", // Basemap layer service
+            layers: [mapImageLayer]
+          });
+        
+          const view = new MapView({
+            map: map,
+            center: [-124.2353, 44.5687], // Longitude, latitude
+            zoom: 11, // Zoom level
+            container: "viewDiv" // Div element
+          });
+
+          function showCoordinates(evt) {
+            var point = view.toMap({x: evt.x, y: evt.y});
+            //the map is in web mercator but display coordinates in geographic (lat, long)
+            var mp = webMercatorUtils.webMercatorToGeographic(point);
+            //display mouse coordinates
+            dom.byId("info").innerHTML = mp.x.toFixed(5) + ", " + mp.y.toFixed(5);
+          }
+          
+          view.when(function(){
+            //after map loads, connect to listen to mouse move & drag events
+            view.on("pointer-move", showCoordinates);
+          });
+        });
+      });
+    </script>
+  
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+  <span id="info" style="position:absolute; left:100px; bottom: 100px; color:#060606; z-index:50;"></span>
+</body>
+
+</html>
