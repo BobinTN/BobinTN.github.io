@@ -31,11 +31,22 @@
       "esri/widgets/LayerList",
       //"esri/geometry/support/webMercatorUtils",
       "esri/widgets/CoordinateConversion",
+      "esri/widgets/Sketch",
+      "esri/layers/GraphicsLayer",
        //"dojo/dom",
        //"dojo/domReady!"
     ],
-       function( Basemap, TileLayer, MapImageLayer, ImageryTileLayer, FeatureLayer, Map, MapView, LayerList, CoordinateConversion) {
-          PacWaveLayer1 = new FeatureLayer({
+       function( Basemap, TileLayer, MapImageLayer, ImageryTileLayer, FeatureLayer, Map, MapView, LayerList, CoordinateConversion, Sketch, GraphicsLayer) {
+         const graphicsLayer = new GraphicsLayer({
+          title: "Graphics Layer"
+         });
+         SeaBedLayer = new FeatureLayer({
+           portalItem: {
+             id: "0919a1f7355a43cf8de2068011f68dfd"
+           },
+           popupEnabled: true,
+         })
+         PacWaveLayer1 = new FeatureLayer({
             url:"https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/PacWavePlanningData/FeatureServer/4"
           });
           PacWaveLayer2 = new FeatureLayer({
@@ -74,7 +85,7 @@
           });
            const map = new Map({
             basemap: "oceans", // Basemap layer service
-            layers: [NOAAImageLayer, demImageLayer, HS_TileLayer, Oropa_Contours, PacWaveLayer1,PacWaveLayer2]
+            layers: [NOAAImageLayer, demImageLayer, HS_TileLayer, Oropa_Contours, PacWaveLayer1,PacWaveLayer2, SeaBedLayer, graphicsLayer]
           });
         
           const view = new MapView({
@@ -83,16 +94,22 @@
             zoom: 11, // Zoom level
             container: "viewDiv" // Div element
           });
+
           const ccWidget = new CoordinateConversion({
               view: view
-            });
-            view.ui.add(ccWidget, "bottom-left");
-            const layerList = new LayerList({
+          });
+          view.ui.add(ccWidget, "bottom-left");
+          const layerList = new LayerList({
               view: view
-            });
-             view.ui.add(layerList, {
-              position: "top-right"
-            });
+          });
+          view.ui.add(layerList,"top-right");
+          const sketch = new Sketch({
+            layer: graphicsLayer,
+            view: view,
+            creationMode: "update"    // graphic will be selected as soon as it is created
+          });
+
+        view.ui.add(sketch, "top-right");  
 
          view.popupEnabled = false;
          view.on("click", (event) => {
@@ -100,7 +117,8 @@
           const lat = Math.round(event.mapPoint.latitude * 100000) / 100000;
           const lon = Math.round(event.mapPoint.longitude * 100000) / 100000;
           var point = view.toMap({x: lon, y: lat});
-          bob = demImageLayer.identify(event.mapPoint)
+          bob = demImageLayer.identify(event.mapPoint);
+        
            bob.then((response) => {
             console.log(response);
             const Cathy = Math.round(response.value * 10) / 10;
