@@ -10,10 +10,10 @@
     html,
     body,
     #viewDiv {
-      padding: 0;
-      margin: 0;
-      height: 100%;
-      width: 100%;
+      margin: auto;
+      padding: 10px;
+      height: 95%;
+      width: 95%;
     }
   </style>
  
@@ -35,7 +35,7 @@
         const portalURL = "https://3utech.maps.arcgis.com/";
         const info = new OAuthInfo({
           appId:"Pb305EKfS9nzkExJ",  //Client ID
-          popup: true
+          popup: false
         })
         IdentityManager.registerOAuthInfos([info]);
         // send users to arcgis.com to login
@@ -86,7 +86,7 @@
 
 <body>
   <div id="viewDiv"></div>
-  <span id="info" style="position:absolute; left:100px; bottom: 100px; color:#060606; z-index:50;"></span>
+  <span id="info" style="position:absolute; left:100px; bottom: 50px; color:#060606; z-index:50;"></span>
 </body>
 
 </html>
