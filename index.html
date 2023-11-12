@@ -36,15 +36,47 @@
       "esri/widgets/CoordinateConversion/support/Format",
       "esri/widgets/CoordinateConversion/support/Conversion",
       "esri/geometry/Point",
+      "esri/config",
        //"dojo/dom",
        //"dojo/domReady!"
     ],
        function( 
         Basemap, TileLayer, MapImageLayer, ImageryTileLayer, FeatureLayer, 
        Map, MapView, LayerList, webMercatorUtils, Sketch, GraphicsLayer,
-       CoordinateConversion, Format, Conversion,
+       CoordinateConversion, Format, Conversion,esriConfig
        ) {
-         const graphicsLayer = new GraphicsLayer({
+        //esriConfig.apiKey = "AAPKf489adee464543ab980c55d271b47ec5QxDou7UhywXEyHd7hWKEBlugALBR3TH4ITIeaV7HfB2ZQ5ZEUNaJvvUYt6aGQcNS";
+
+        changeOAuthStorage();
+        function changeOAuthStorage() {
+          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+          const key = 'esriJSAPIOAuth';
+          if (window && window.sessionStorage) {
+            const oauth = window.sessionStorage.getItem(key);
+            if (!oauth) {
+              alert("No oauth - returning.")
+              return;
+            }
+            const oauthObj = JSON.parse(oauth);
+            if (window.localStorage) {
+              const localStorageoAuths =  window.localStorage.getItem(key);
+              if (!localStorageoAuths) {
+                window.localStorage.setItem(key, JSON.stringify(oauthObj));
+                window.sessionStorage.removeItem(key);
+                return;
+              }
+              const lsAuth = JSON.parse(localStorageoAuths);
+              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+              window.localStorage.setItem(key, JSON.stringify(lsAuth));
+              window.sessionStorage.removeItem(key);
+            }
+          }
+        }
+ 
+ 
+ 
+ 
+        const graphicsLayer = new GraphicsLayer({
           title: "Graphics Layer"
          });
          SeaBedLayer = new FeatureLayer({

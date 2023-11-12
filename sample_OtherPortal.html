@@ -1,0 +1,78 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Intro to MapView - Create a 2D map | Sample | ArcGIS Maps SDK for JavaScript 4.27</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.27/"></script>
+
+    <script>
+      require(["esri/Map", 
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer",
+      "esri/config"
+    ], (Map, 
+    MapView, 
+    FeatureLayer,
+    esriConfig
+    ) => {
+        esriConfig.apiKey = "AAPKf489adee464543ab980c55d271b47ec5QxDou7UhywXEyHd7hWKEBlugALBR3TH4ITIeaV7HfB2ZQ5ZEUNaJvvUYt6aGQcNS";
+
+        //changeOAuthStorage();
+        function changeOAuthStorage() {
+          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+          const key = 'esriJSAPIOAuth';
+          if (window && window.sessionStorage) {
+            const oauth = window.sessionStorage.getItem(key);
+            if (!oauth) {
+              alert("No oauth - returning.")
+              return;
+            }
+            const oauthObj = JSON.parse(oauth);
+            if (window.localStorage) {
+              const localStorageoAuths =  window.localStorage.getItem(key);
+              if (!localStorageoAuths) {
+                window.localStorage.setItem(key, JSON.stringify(oauthObj));
+                window.sessionStorage.removeItem(key);
+                return;
+              }
+              const lsAuth = JSON.parse(localStorageoAuths);
+              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+              window.localStorage.setItem(key, JSON.stringify(lsAuth));
+              window.sessionStorage.removeItem(key);
+            }
+          }
+        }
+
+        const map = new Map({
+          basemap: "topo-vector"
+        });
+        const myFLayer = new FeatureLayer ({
+          url: "https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Corridor_Contours_1m/FeatureServer/0"
+        });
+        map.add(myFLayer,0)
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 11,
+          center: [-124.23049, 44.56650, 0] // longitude, latitude
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>

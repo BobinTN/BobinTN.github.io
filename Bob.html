@@ -31,6 +31,35 @@
       "dojo/dom",
       "dojo/domReady!"],
        function(esriConfig, Basemap, MapImageLayer, Map, OAuthInfo, IdentityManager, MapView, webMercatorUtils, dom) {
+
+        changeOAuthStorage();
+        function changeOAuthStorage() {
+          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+          const key = 'esriJSAPIOAuth';
+          if (window && window.sessionStorage) {
+            const oauth = window.sessionStorage.getItem(key);
+            if (!oauth) {
+              alert("No oauth - returning.")
+              return;
+            }
+            const oauthObj = JSON.parse(oauth);
+            if (window.localStorage) {
+              const localStorageoAuths =  window.localStorage.getItem(key);
+              if (!localStorageoAuths) {
+                window.localStorage.setItem(key, JSON.stringify(oauthObj));
+                window.sessionStorage.removeItem(key);
+                return;
+              }
+              const lsAuth = JSON.parse(localStorageoAuths);
+              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+              window.localStorage.setItem(key, JSON.stringify(lsAuth));
+              window.sessionStorage.removeItem(key);
+            }
+          }
+        }
+
+
+
         esriConfig.apiKey = "AAPKf489adee464543ab980c55d271b47ec5QxDou7UhywXEyHd7hWKEBlugALBR3TH4ITIeaV7HfB2ZQ5ZEUNaJvvUYt6aGQcNS";
         const portalURL = "https://3utech.maps.arcgis.com/";
         const info = new OAuthInfo({
