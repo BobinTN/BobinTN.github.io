@@ -29,34 +29,34 @@
       "esri/views/MapView",
       "esri/geometry/support/webMercatorUtils",
       "dojo/dom",
-      "dojo/domReady!"],
-       function(esriConfig, Basemap, MapImageLayer, Map, OAuthInfo, IdentityManager, MapView, webMercatorUtils, dom) {
+      "dojo/domReady!","esri/layers/FeatureLayer",],
+       function(esriConfig, Basemap, MapImageLayer, Map, OAuthInfo, IdentityManager, MapView, webMercatorUtils, dom,FeatureLayer) {
 
-        changeOAuthStorage();
-        function changeOAuthStorage() {
-          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
-          const key = 'esriJSAPIOAuth';
-          if (window && window.sessionStorage) {
-            const oauth = window.sessionStorage.getItem(key);
-            if (!oauth) {
-              alert("No oauth - returning.")
-              return;
-            }
-            const oauthObj = JSON.parse(oauth);
-            if (window.localStorage) {
-              const localStorageoAuths =  window.localStorage.getItem(key);
-              if (!localStorageoAuths) {
-                window.localStorage.setItem(key, JSON.stringify(oauthObj));
-                window.sessionStorage.removeItem(key);
-                return;
-              }
-              const lsAuth = JSON.parse(localStorageoAuths);
-              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
-              window.localStorage.setItem(key, JSON.stringify(lsAuth));
-              window.sessionStorage.removeItem(key);
-            }
-          }
-        }
+        // changeOAuthStorage();
+        // function changeOAuthStorage() {
+        //   // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+        //   const key = 'esriJSAPIOAuth';
+        //   if (window && window.sessionStorage) {
+        //     const oauth = window.sessionStorage.getItem(key);
+        //     if (!oauth) {
+        //       alert("No oauth - returning.")
+        //       return;
+        //     }
+        //     const oauthObj = JSON.parse(oauth);
+        //     if (window.localStorage) {
+        //       const localStorageoAuths =  window.localStorage.getItem(key);
+        //       if (!localStorageoAuths) {
+        //         window.localStorage.setItem(key, JSON.stringify(oauthObj));
+        //         window.sessionStorage.removeItem(key);
+        //         return;
+        //       }
+        //       const lsAuth = JSON.parse(localStorageoAuths);
+        //       lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+        //       window.localStorage.setItem(key, JSON.stringify(lsAuth));
+        //       window.sessionStorage.removeItem(key);
+        //     }
+        //   }
+        // }
 
 
 
@@ -88,13 +88,10 @@
             layers: [mapImageLayer]
           });
         
-          const view = new MapView({
-            map: map,
-            center: [-124.2353, 44.5687], // Longitude, latitude
-            zoom: 11, // Zoom level
-            container: "viewDiv" // Div element
-          });
-
+          // const myFLayer = new FeatureLayer ({
+          //   url: "https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Corridor_Contours_1m/FeatureServer/0"
+          // });
+          // map.add(myFLayer,0)
           function showCoordinates(evt) {
             var point = view.toMap({x: evt.x, y: evt.y});
             //the map is in web mercator but display coordinates in geographic (lat, long)
@@ -102,7 +99,12 @@
             //display mouse coordinates
             dom.byId("info").innerHTML = mp.x.toFixed(5) + ", " + mp.y.toFixed(5);
           }
-          
+      const view = new MapView({
+            map: map,
+            center: [-124.2353, 44.5687], // Longitude, latitude
+            zoom: 11, // Zoom level
+            container: "viewDiv" // Div element
+          });          
           view.when(function(){
             //after map loads, connect to listen to mouse move & drag events
             view.on("pointer-move", showCoordinates);
