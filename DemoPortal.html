@@ -68,13 +68,18 @@
 
 
         var params = urlUtils.urlToObject(document.location.href);
-        var DL_SQL = "city = '" + params.query.cityName + "'";
-        var DL_cityLon = Number(params.query.cityLon)
-        var DL_cityLat = Number(params.query.cityLat)
-        var DL_cityCenter = [DL_cityLon,DL_cityLat];
-        //var cityPoint = "[" + Number(params.query.cityLon) + "," + Number(params.query.cityLat) + "]";
-        var DZ_cityYield = params.query.yieldType;
+        var CityName = params.query.cityName;
+        var cityLon = Number(params.query.cityLon);
+        var cityLat = Number(params.query.cityLat);
+        var cityCenter = [cityLon,cityLat];
+        var CityYield = params.query.yieldType;
         var cityWeather = params.query.weatherType;
+
+        var SQL_cityName = "city = '" + CityName + "'";
+        var SQL_cityYield = "yield = '" + CityYield + "'";
+        var DL_SQL = SQL_cityName;
+        var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
+
         //var myCenter = cityPoint;
         //var myCenter = [-86.782, 36.161] 
           // var filter = null, exp = null;
@@ -93,12 +98,12 @@
         });
         const DLFLayer = new FeatureLayer({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Detonation_Locations/FeatureServer/0",
-          definitionExpression:DL_SQL 
+          definitionExpression: DL_SQL 
         });
 
         const DZFLayer = new FeatureLayer ({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Damage_Zones/FeatureServer/0",
-          definitionExpression: DL_SQL
+          definitionExpression: DZ_SQL
         });
         map.add(DZFLayer,0);
         map.add(DLFLayer,1);
@@ -106,7 +111,7 @@
           container: "viewDiv",
           map: map,
           zoom: myZoom,
-          center: DL_cityCenter // longitude, latitude
+          center: cityCenter // longitude, latitude
         });
       });
     </script>
