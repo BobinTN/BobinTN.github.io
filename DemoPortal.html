@@ -17,65 +17,65 @@
 
     <script src="https://js.arcgis.com/4.27/"></script>
     <script>
-         window.onload = function(){
-            const urlParams = new URLSearchParams(window.location.search);
-            const cityValue = urlParams.get('cityName');
-            // var spanCity = document.getElementById("result-cityName")
-            // spanCity.textContent = cityValue;
-            const yieldValue = urlParams.get('yieldType');
-            // var spanYield = document.getElementById("result-yieldType")
-            // spanYield.textContent = yieldValue;            
-            const weatherValue = urlParams.get('weatherType');
-            // var spanWeather = document.getElementById("result-weatherType")
-            // spanWeather.textContent = weatherValue; 
-            myCity = "city = '" + cityValue + "'";
+      //    window.onload = function(){
+      //       const urlParams = new URLSearchParams(window.location.search);
+      //       const cityValue = urlParams.get('cityName');
+      //       // var spanCity = document.getElementById("result-cityName")
+      //       // spanCity.textContent = cityValue;
+      //       const yieldValue = urlParams.get('yieldType');
+      //       // var spanYield = document.getElementById("result-yieldType")
+      //       // spanYield.textContent = yieldValue;            
+      //       const weatherValue = urlParams.get('weatherType');
+      //       // var spanWeather = document.getElementById("result-weatherType")
+      //       // spanWeather.textContent = weatherValue; 
+             //DL_SQL = "city = '" + cityValue + "'";
               
-            // alert("City Name: " + cityValue +
-            //     "\nYield Type: " + yieldValue +
-            //     "\nWeather Type: " + weatherValue +
-            //     "\nmyCity: " + myCity);
-          } 
-      //var myCity = "city = 'Albany'";
+      //       // alert("City Name: " + cityValue +
+      //       //     "\nYield Type: " + yieldValue +
+      //       //     "\nWeather Type: " + weatherValue +
+      //       //     "\nmyCity: " + myCity);
+      //     } 
+      // //var myCity = "city = 'Albany'";
       var myZoom = 11;
                
       require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer", "esri/core/urlUtils"], (Map, MapView, FeatureLayer,urlUtils) => {
 
-        changeOAuthStorage();
-        function changeOAuthStorage() {
-          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
-          const key = 'esriJSAPIOAuth';
-          if (window && window.sessionStorage) {
-            const oauth = window.sessionStorage.getItem(key);
-            if (!oauth) {
-              return;
-            }
-            const oauthObj = JSON.parse(oauth);
-            if (window.localStorage) {
-              const localStorageoAuths =  window.localStorage.getItem(key);
-              if (!localStorageoAuths) {
-                window.localStorage.setItem(key, JSON.stringify(oauthObj));
-                window.sessionStorage.removeItem(key);
-                return;
-              }
-              const lsAuth = JSON.parse(localStorageoAuths);
-              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
-              window.localStorage.setItem(key, JSON.stringify(lsAuth));
-              window.sessionStorage.removeItem(key);
-            }
-          }
-        }
+        // changeOAuthStorage();
+        // function changeOAuthStorage() {
+        //   // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+        //   const key = 'esriJSAPIOAuth';
+        //   if (window && window.sessionStorage) {
+        //     const oauth = window.sessionStorage.getItem(key);
+        //     if (!oauth) {
+        //       return;
+        //     }
+        //     const oauthObj = JSON.parse(oauth);
+        //     if (window.localStorage) {
+        //       const localStorageoAuths =  window.localStorage.getItem(key);
+        //       if (!localStorageoAuths) {
+        //         window.localStorage.setItem(key, JSON.stringify(oauthObj));
+        //         window.sessionStorage.removeItem(key);
+        //         return;
+        //       }
+        //       const lsAuth = JSON.parse(localStorageoAuths);
+        //       lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+        //       window.localStorage.setItem(key, JSON.stringify(lsAuth));
+        //       window.sessionStorage.removeItem(key);
+        //     }
+        //   }
+        // }
 
 
 
         var params = urlUtils.urlToObject(document.location.href);
-        var myCity = "city = '" + params.query.cityName + "'";
-        var cityLon = Number(params.query.cityLon)
-        var cityLat = Number(params.query.cityLat)
-        var myArr = [cityLon,cityLat];
-        var cityPoint = "[" + Number(params.query.cityLon) + "," + Number(params.query.cityLat) + "]";
-        var cityYield = params.query.yieldType;
+        var DL_SQL = "city = '" + params.query.cityName + "'";
+        var DL_cityLon = Number(params.query.cityLon)
+        var DL_cityLat = Number(params.query.cityLat)
+        var DL_cityCenter = [DL_cityLon,DL_cityLat];
+        //var cityPoint = "[" + Number(params.query.cityLon) + "," + Number(params.query.cityLat) + "]";
+        var DZ_cityYield = params.query.yieldType;
         var cityWeather = params.query.weatherType;
-        var myCenter = cityPoint;
+        //var myCenter = cityPoint;
         //var myCenter = [-86.782, 36.161] 
           // var filter = null, exp = null;
           // if (urlObject.query !== null) {
@@ -93,12 +93,12 @@
         });
         const DLFLayer = new FeatureLayer({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Detonation_Locations/FeatureServer/0",
-          definitionExpression: myCity 
+          definitionExpression:DL_SQL 
         });
 
         const DZFLayer = new FeatureLayer ({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Damage_Zones/FeatureServer/0",
-          definitionExpression: myCity 
+          definitionExpression: DL_SQL
         });
         map.add(DZFLayer,0);
         map.add(DLFLayer,1);
@@ -106,7 +106,7 @@
           container: "viewDiv",
           map: map,
           zoom: myZoom,
-          center: myArr // longitude, latitude
+          center: DL_cityCenter // longitude, latitude
         });
       });
     </script>
