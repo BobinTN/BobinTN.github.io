@@ -79,7 +79,7 @@
         var SQL_cityYield = "yield = '" + CityYield + "'";
         var DL_SQL = SQL_cityName;
         var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
-        //var DZ_SQL = "yield = '1 kt' AND city = 'Albany'"
+        //var DZ_SQL = SQL_cityName;
         //alert(DZ_SQL);
         //var myCenter = cityPoint;
         //var myCenter = [-86.782, 36.161] 
@@ -96,12 +96,12 @@
   
 
         const DLFLayer = new FeatureLayer({
-          url: "https://services3.arcgis.com/DCP1gSPLBnu7BSDG/arcgis/rest/services/Detonation_Locations/FeatureServer",
+          url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Detonation_Locations/FeatureServer",
           definitionExpression: DL_SQL 
         });
 
         const DZFLayer = new FeatureLayer ({
-          url: "https://services3.arcgis.com/DCP1gSPLBnu7BSDG/arcgis/rest/services/Damage_Zones/FeatureServer",
+          url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Damage_Zones/FeatureServer",
           definitionExpression: DZ_SQL
         });
         const map = new Map({

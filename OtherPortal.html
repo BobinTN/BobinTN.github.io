@@ -68,17 +68,18 @@
 
 
         var params = urlUtils.urlToObject(document.location.href);
-        var CityName = params.query.cityName;
+        var CityAbbr = params.query.cityName;
         var cityLon = Number(params.query.cityLon);
         var cityLat = Number(params.query.cityLat);
         var cityCenter = [cityLon,cityLat];
         var CityYield = params.query.yieldType;
         var cityWeather = params.query.weatherType;
 
-        var SQL_cityName = "city = '" + CityName + "'";
+        var SQL_CityAbbr = "abbreviati = '" + CityAbbr + "'";
         var SQL_cityYield = "yield = '" + CityYield + "'";
-        var DL_SQL = SQL_cityName;
-        var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
+        var DL_SQL = SQL_CityAbbr;
+        alert(DL_SQL);
+        var DZ_SQL = SQL_CityAbbr + " AND " + SQL_cityYield;
         //var DZ_SQL = "yield = '1 kt' AND city = 'Albany'"
         //alert(DZ_SQL);
         //var myCenter = cityPoint;
