@@ -27,7 +27,7 @@
     FeatureLayer,
     esriConfig
     ) => {
-        esriConfig.apiKey = "AAPKf489adee464543ab980c55d271b47ec5QxDou7UhywXEyHd7hWKEBlugALBR3TH4ITIeaV7HfB2ZQ5ZEUNaJvvUYt6aGQcNS";
+        // esriConfig.apiKey = "AAPKf489adee464543ab980c55d271b47ec5QxDou7UhywXEyHd7hWKEBlugALBR3TH4ITIeaV7HfB2ZQ5ZEUNaJvvUYt6aGQcNS";
 
         //changeOAuthStorage();
         function changeOAuthStorage() {
@@ -59,14 +59,15 @@
           basemap: "topo-vector"
         });
         const myFLayer = new FeatureLayer ({
-          url: "https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Corridor_Contours_1m/FeatureServer/0"
+          url: "https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Bob/FeatureServer",
+          definitionExpression: "LINE_ID = 'Level005' and UNITS = 'Spring'"
         });
         map.add(myFLayer,0)
         const view = new MapView({
           container: "viewDiv",
           map: map,
           zoom: 11,
-          center: [-124.23049, 44.56650, 0] // longitude, latitude
+          center: [-87.0, 36.25, 0] // longitude, latitude
         });
       });
     </script>
