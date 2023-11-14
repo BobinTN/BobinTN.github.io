@@ -36,15 +36,51 @@
       "esri/widgets/CoordinateConversion/support/Format",
       "esri/widgets/CoordinateConversion/support/Conversion",
       "esri/geometry/Point",
+      "esri/portal/Portal",
+      "esri/identity/OAuthInfo",
+      "esri/identity/IdentityManager",
+      "esri/portal/PortalQueryParams"
        //"dojo/dom",
        //"dojo/domReady!"
     ],
        function( 
         Basemap, TileLayer, MapImageLayer, ImageryTileLayer, FeatureLayer, 
        Map, MapView, LayerList, webMercatorUtils, Sketch, GraphicsLayer,
-       CoordinateConversion, Format, Conversion,
+       CoordinateConversion, Format, Conversion,point,
+       Portal,OAuthInfo,esriId,PortalQueryParams
        ) {
-         const graphicsLayer = new GraphicsLayer({
+ 
+        const info = new OAuthInfo({
+          appId: "eqoYmbHuNKLOaRUO",
+           // Uncomment the next line and update if using your own portal
+          portalUrl: 'https://3utech.maps.arcgis.com/',  //"https://<host>:<port>/arcgis",
+          // Uncomment the next line to prevent the user's signed in state from being shared with other apps on the same domain with the same authNamespace value.
+          authNamespace: "portal_oauth_inline",
+          flowType: "auto", // default that uses two-step flow
+          popup: false
+        });
+        esriId.registerOAuthInfos([info]);
+   
+        esriId.checkSignInStatus(info.portalUrl + "/sharing").then(() => {
+          displayItems();
+          }).catch(() => {
+            // Anonymous view
+            anonPanelElement.style.display = "block";
+            personalPanelElement.style.display = "none";
+          });
+
+          document.getElementById("sign-in").addEventListener("click", () => {
+            // user will be redirected to OAuth sign-in page
+            esriId.getCredential(info.portalUrl + "/sharing");
+          });
+
+          document.getElementById("sign-out").addEventListener("click", () => {
+            esriId.destroyCredentials();
+            window.location.reload();
+          });
+
+
+        const graphicsLayer = new GraphicsLayer({
           title: "Graphics Layer"
          });
          SeaBedLayer = new FeatureLayer({
@@ -226,6 +262,13 @@
 </head>
 
 <body>
+  <div id="anonymousPanel" style="display: none; padding: 5px; text-align: center;">
+    <span id="sign-in" class="action">Sign In</span> and view your ArcGIS Online items.
+  </div>
+  <button id="sign-in" class="btn btn-primary">Sign In</button>
+  <button id="sign-out" class="btn btn-primary">Sign Out</button>
+  <pre><code id="results"></code></pre>
+
   <div id="viewDiv"></div>
  <!--- <span id="info" style="position:absolute; left:25px; bottom: 25px; color:#060606; z-index:50;"></span>->
 </body>
