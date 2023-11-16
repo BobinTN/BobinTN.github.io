@@ -37,45 +37,13 @@
       "esri/widgets/CoordinateConversion/support/Conversion",
       "esri/geometry/Point",
       "esri/config",
-       //"dojo/dom",
-       //"dojo/domReady!"
     ],
        function( 
         Basemap, TileLayer, MapImageLayer, ImageryTileLayer, FeatureLayer, 
        Map, MapView, LayerList, webMercatorUtils, Sketch, GraphicsLayer,
        CoordinateConversion, Format, Conversion,esriConfig
        ) {
-        //esriConfig.apiKey = "AAPKf489adee464543ab980c55d271b47ec5QxDou7UhywXEyHd7hWKEBlugALBR3TH4ITIeaV7HfB2ZQ5ZEUNaJvvUYt6aGQcNS";
 
-        changeOAuthStorage();
-        function changeOAuthStorage() {
-          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
-          const key = 'esriJSAPIOAuth';
-          if (window && window.sessionStorage) {
-            const oauth = window.sessionStorage.getItem(key);
-            if (!oauth) {
-              alert("No oauth - returning.")
-              return;
-            }
-            const oauthObj = JSON.parse(oauth);
-            if (window.localStorage) {
-              const localStorageoAuths =  window.localStorage.getItem(key);
-              if (!localStorageoAuths) {
-                window.localStorage.setItem(key, JSON.stringify(oauthObj));
-                window.sessionStorage.removeItem(key);
-                return;
-              }
-              const lsAuth = JSON.parse(localStorageoAuths);
-              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
-              window.localStorage.setItem(key, JSON.stringify(lsAuth));
-              window.sessionStorage.removeItem(key);
-            }
-          }
-        }
- 
- 
- 
- 
         const graphicsLayer = new GraphicsLayer({
           title: "Graphics Layer"
          });
@@ -97,8 +65,7 @@
           NOAAImageLayer = new MapImageLayer({
             portalItem: {
               id: "5cbd464c75a3444592f1dbd28d04af98"  //NOAA ENC
-            //id: "1b243539f4514b6ba35e7d995890db1d" // World Hillshade
-            }
+             }
           });
           HS_TileLayer = new TileLayer({
             url: "https://tiles.arcgis.com/tiles/RW2IdRvIbmA3FJ1X/arcgis/rest/services/HS_Bathy_Oropa/MapServer"
@@ -112,21 +79,10 @@
                 places:1
               }
             }],
-            content: GetXYContent(event.mapPoint),
           };
           const params = {
             location: event.mapPoint
           };
-          function GetXYContent(point) {
-             // var returnPoint = point.location.spatialReference.isWGS84 ? point :
-            //   webMercatorUtils.webMercatorToGeographic(point);
-            //var x = point.x.toFixed(4);
-            //var y = point.y.toFixed(4);
-            //bob = point.x;
-            return  "Hello Bob" ;}
-
-
-
 
           demImageLayer = new ImageryTileLayer ({
             url:"https://tiledimageservices1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Bathy_Oropa_1m/ImageServer",
@@ -226,40 +182,11 @@
           });
 
         view.ui.add(sketch, "top-right");  
-
-        //  view.popupEnabled = false;
-        //  view.on("click", (event) => {
-        //   // Get the coordinates of the click on the view
-        //   const lat = Math.round(event.mapPoint.latitude * 100000) / 100000;
-        //   const lon = Math.round(event.mapPoint.longitude * 100000) / 100000;
-        //   var point = view.toMap({x: lon, y: lat});
-        //   bob = demImageLayer.identify(event.mapPoint);
-        
-        //    bob.then((response) => {
-        //     console.log(response);
-        //     const Cathy = Math.round(response.value * 10) / 10;
-        //     view.openPopup({
-        //     // Set the popup's title to the coordinates of the location
-        //     title: "Lat, Lon, Depth(m): " + lat + ", " + lon + ", " + Cathy,
-        //     location: event.mapPoint // Set the location of the popup to the clicked location
-        //   });
-        //   })
-        //   .catch(() => {
-        //     Cathy = "Alex";
-        //   });
-
-        //   const params = {
-        //     location: event.mapPoint
-        //   };       
-        //  });
       });
     </script>
   
 </head>
-
 <body>
   <div id="viewDiv"></div>
- <!--- <span id="info" style="position:absolute; left:25px; bottom: 25px; color:#060606; z-index:50;"></span>->
 </body>
-
 </html>
