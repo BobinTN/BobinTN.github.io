@@ -1,5 +1,5 @@
-import WebMap from '@arcgis/core/WebMap';
-import MapView from '@arcgis/core/views/MapView';
+import WebMap from 'node_modules/@arcgis/core/WebMap';
+import MapView from 'noed_modules/@arcgis/core/views/MapView';
 import { initialize, checkCurrentStatus, signIn, signOut} from './oauth';
 
 import './style.css';
