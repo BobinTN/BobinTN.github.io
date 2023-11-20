@@ -14,8 +14,8 @@ async function loadMap(){
 
 const webmap = new WebMap({
     portalItem: {
-        id: 'bef6135fe3f6494b843c278d4899daf6'
-        //id: '16e8d48059de4d948e10b00aac3569d4'
+        //id: 'bef6135fe3f6494b843c278d4899daf6'
+        id: '16e8d48059de4d948e10b00aac3569d4'
         //id: '9204932290924d79972be9d9d76251ba'
     }
 });
