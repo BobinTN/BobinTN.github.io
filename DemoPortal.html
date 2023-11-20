@@ -1,0 +1,141 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Intro to MapView - Create a 2D map | Sample | ArcGIS Maps SDK for JavaScript 4.27</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+
+    <script src="https://js.arcgis.com/4.27/"></script>
+    <script>
+      //    window.onload = function(){
+      //       const urlParams = new URLSearchParams(window.location.search);
+      //       const cityValue = urlParams.get('cityName');
+      //       // var spanCity = document.getElementById("result-cityName")
+      //       // spanCity.textContent = cityValue;
+      //       const yieldValue = urlParams.get('yieldType');
+      //       // var spanYield = document.getElementById("result-yieldType")
+      //       // spanYield.textContent = yieldValue;            
+      //       const weatherValue = urlParams.get('weatherType');
+      //       // var spanWeather = document.getElementById("result-weatherType")
+      //       // spanWeather.textContent = weatherValue; 
+             //DL_SQL = "city = '" + cityValue + "'";
+              
+      //       // alert("City Name: " + cityValue +
+      //       //     "\nYield Type: " + yieldValue +
+      //       //     "\nWeather Type: " + weatherValue +
+      //       //     "\nmyCity: " + myCity);
+      //     } 
+      // //var myCity = "city = 'Albany'";
+      var myZoom = 11;
+               
+      require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer", "esri/core/urlUtils"], (Map, MapView, FeatureLayer,urlUtils) => {
+
+        // changeOAuthStorage();
+        // function changeOAuthStorage() {
+        //   // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+        //   const key = 'esriJSAPIOAuth';
+        //   if (window && window.sessionStorage) {
+        //     const oauth = window.sessionStorage.getItem(key);
+        //     if (!oauth) {
+        //       return;
+        //     }
+        //     const oauthObj = JSON.parse(oauth);
+        //     if (window.localStorage) {
+        //       const localStorageoAuths =  window.localStorage.getItem(key);
+        //       if (!localStorageoAuths) {
+        //         window.localStorage.setItem(key, JSON.stringify(oauthObj));
+        //         window.sessionStorage.removeItem(key);
+        //         return;
+        //       }
+        //       const lsAuth = JSON.parse(localStorageoAuths);
+        //       lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+        //       window.localStorage.setItem(key, JSON.stringify(lsAuth));
+        //       window.sessionStorage.removeItem(key);
+        //     }
+        //   }
+        // }
+
+
+
+        var params = urlUtils.urlToObject(document.location.href);
+        var CityName = params.query.cityName;
+        var cityLon = Number(params.query.cityLon);
+        var cityLat = Number(params.query.cityLat);
+        var cityCenter = [cityLon,cityLat];
+        var CityYield = params.query.yieldType;
+        var cityWeather = params.query.weatherType;
+
+        var SQL_cityName = "city = '" + CityName + "'";
+        var SQL_cityYield = "yield = '" + CityYield + "'";
+        var DL_SQL = SQL_cityName;
+        var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
+        //var DZ_SQL = SQL_cityName;
+        //alert(DZ_SQL);
+        //var myCenter = cityPoint;
+        //var myCenter = [-86.782, 36.161] 
+          // var filter = null, exp = null;
+          // if (urlObject.query !== null) {
+          //   if (urlObject.query.filter) {
+          //     filter = urlObject.query.filter;
+          //   }
+          // }
+
+          // if (filter !== null) {
+          //   exp = "Locality = '" + filter + "'";
+          // }
+  
+
+        const DLFLayer = new FeatureLayer({
+          url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Detonation_Locations/FeatureServer",
+          definitionExpression: DL_SQL 
+        });
+
+        const DZFLayer = new FeatureLayer ({
+          url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Damage_Zones/FeatureServer",
+          definitionExpression: DZ_SQL
+        });
+        const map = new Map({
+          basemap: "topo-vector",
+          layers: [DLFLayer,DZFLayer]
+        });
+        map.add(DZFLayer,0);
+        map.add(DLFLayer,1);
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: myZoom,
+          center: cityCenter // longitude, latitude
+        });
+      });
+    </script>
+    
+  </head>
+
+  <body>
+    <div id="viewDiv">
+  <!-- <h1>
+        Result Page
+    </h1>
+    <h2>
+        City: <span id="result-cityName"></span>
+    </h2>
+    <h2>
+        Yield: <span id="result-yieldType" />
+    </h2>
+    <h2>
+        Weather: <span id="result-weatherType" />
+    <h/2> -->
+    </div>
+ 
+  </body>
+</html>

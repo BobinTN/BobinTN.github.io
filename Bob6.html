@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>ArcGIS Maps SDK for JavaScript Tutorials: Display a map</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+ 
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.28/"></script>
+   <script>
+      require([
+      "esri/Basemap",
+      "esri/layers/TileLayer",
+      "esri/layers/MapImageLayer",
+      "esri/layers/ImageryTileLayer",
+      "esri/layers/FeatureLayer",
+      "esri/Map", 
+      "esri/views/MapView",
+      "esri/widgets/LayerList",
+      "esri/geometry/support/webMercatorUtils",
+      "esri/widgets/Sketch",
+      "esri/layers/GraphicsLayer",
+      "esri/widgets/CoordinateConversion",
+      "esri/widgets/CoordinateConversion/support/Format",
+      "esri/widgets/CoordinateConversion/support/Conversion",
+      "esri/geometry/Point",
+      "esri/portal/Portal",
+      "esri/identity/OAuthInfo",
+      "esri/identity/IdentityManager",
+      "esri/portal/PortalQueryParams"
+       //"dojo/dom",
+       //"dojo/domReady!"
+    ],
+       function( 
+        Basemap, TileLayer, MapImageLayer, ImageryTileLayer, FeatureLayer, 
+       Map, MapView, LayerList, webMercatorUtils, Sketch, GraphicsLayer,
+       CoordinateConversion, Format, Conversion,point,
+       Portal,OAuthInfo,esriId,PortalQueryParams
+       ) {
+ 
+        const info = new OAuthInfo({
+          appId: "eqoYmbHuNKLOaRUO",
+           // Uncomment the next line and update if using your own portal
+          portalUrl: 'https://3utech.maps.arcgis.com/',  //"https://<host>:<port>/arcgis",
+          // Uncomment the next line to prevent the user's signed in state from being shared with other apps on the same domain with the same authNamespace value.
+          authNamespace: "portal_oauth_inline",
+          flowType: "auto", // default that uses two-step flow
+          popup: false
+        });
+        esriId.registerOAuthInfos([info]);
+   
+        esriId.checkSignInStatus(info.portalUrl + "/sharing").then(() => {
+          displayItems();
+          }).catch(() => {
+            // Anonymous view
+            anonPanelElement.style.display = "block";
+            personalPanelElement.style.display = "none";
+          });
+
+          document.getElementById("sign-in").addEventListener("click", () => {
+            // user will be redirected to OAuth sign-in page
+            esriId.getCredential(info.portalUrl + "/sharing");
+          });
+
+          document.getElementById("sign-out").addEventListener("click", () => {
+            esriId.destroyCredentials();
+            window.location.reload();
+          });
+
+
+        const graphicsLayer = new GraphicsLayer({
+          title: "Graphics Layer"
+         });
+         SeaBedLayer = new FeatureLayer({
+           portalItem: {
+             id: "0919a1f7355a43cf8de2068011f68dfd"
+           },
+           popupEnabled: true,
+         })
+         PacWaveLayer1 = new FeatureLayer({
+            url:"https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/PacWavePlanningData/FeatureServer/4"
+          });
+          PacWaveLayer2 = new FeatureLayer({
+            url:"https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/PacWavePlanningData/FeatureServer/5"
+          });
+          Oropa_Contours = new FeatureLayer({
+            url:"https://services1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Contour_1m_Oropa/FeatureServer"
+          });
+          NOAAImageLayer = new MapImageLayer({
+            portalItem: {
+              id: "5cbd464c75a3444592f1dbd28d04af98"  //NOAA ENC
+            //id: "1b243539f4514b6ba35e7d995890db1d" // World Hillshade
+            }
+          });
+          HS_TileLayer = new TileLayer({
+            url: "https://tiles.arcgis.com/tiles/RW2IdRvIbmA3FJ1X/arcgis/rest/services/HS_Bathy_Oropa/MapServer"
+          })
+          const imagePopupTemplate = {
+          // autocasts as new PopupTemplate()
+            title: "Oropa Bathymetry: {Raster.ServicePixelValue} Meters",
+            fieldInfos: [{
+              fieldName: 'Raster.ServicePixelValue',
+              format: {
+                places:1
+              }
+            }],
+            content: GetXYContent(event.mapPoint),
+          };
+          const params = {
+            location: event.mapPoint
+          };
+          function GetXYContent(point) {
+             // var returnPoint = point.location.spatialReference.isWGS84 ? point :
+            //   webMercatorUtils.webMercatorToGeographic(point);
+            //var x = point.x.toFixed(4);
+            //var y = point.y.toFixed(4);
+            //bob = point.x;
+            return  "Hello Bob" ;}
+
+
+
+
+          demImageLayer = new ImageryTileLayer ({
+            url:"https://tiledimageservices1.arcgis.com/RW2IdRvIbmA3FJ1X/arcgis/rest/services/Bathy_Oropa_1m/ImageServer",
+            popupEnabled: true,
+            popupTemplate: imagePopupTemplate
+          });
+           const map = new Map({
+            basemap: "oceans", // Basemap layer service
+            layers: [NOAAImageLayer, demImageLayer, HS_TileLayer, Oropa_Contours, PacWaveLayer1,PacWaveLayer2, SeaBedLayer, graphicsLayer]
+          });
+        
+          const view = new MapView({
+            map: map,
+            center: [-124.2353, 44.5687], // Longitude, latitude
+            zoom: 11, // Zoom level
+            container: "viewDiv" // Div element
+          });
+
+          const ccWidget = new CoordinateConversion({
+              view: view
+          });
+          view.ui.add(ccWidget, "bottom-left");
+
+          // Regular expression to find a number
+          var numberSearchPattern = /-?\d+[\.]?\d*/;
+          var newFormat = new Format({
+            // The format's name should be unique with respect to other formats used by the widget
+            name: "XYZ",
+            conversionInfo: {
+            // Define a convert function
+            // Point -> Position
+              convert: function(point) {
+                var returnPoint = point.spatialReference.isWGS84 ? point :
+                webMercatorUtils.webMercatorToGeographic(point);
+                var x = returnPoint.x.toFixed(5);
+                var y = returnPoint.y.toFixed(5);
+                //var z = returnPoint.z.toFixed(4);
+                bob = demImageLayer.identify(returnPoint);
+                bob.then((response) => {
+                Cathy = Math.round(response.value * 10) / 10;
+                });
+                var z = Cathy;
+                //console.log(z);
+                return {
+                location: returnPoint,
+                coordinate: `${x}, ${y}, ${z}`
+               };
+            },
+          // Define a reverse convert function
+          // String -> Point
+          reverseConvert: function(string) {
+            var parts = string.split(",")
+            return new Point({
+              x: parseFloat(parts[0]),
+              y: parseFloat(parts[1]),
+              z: parseFloat(parts[2]),
+              spatialReference: {
+                wkid: 4326
+              }
+            });
+          }
+        },
+        // Define each segment of the coordinate
+        coordinateSegments: [
+        {
+          alias: "X",
+          description: "Longitude",
+          searchPattern: numberSearchPattern
+        },
+        {
+          alias: "Y",
+          description: "Latitude",
+          searchPattern: numberSearchPattern
+        },
+        {
+          alias: "Z",
+          description: "Elevation",
+          searchPattern: numberSearchPattern
+        }],
+        defaultPattern: "X, Y, Z"
+      });
+      ccWidget.formats.add(newFormat);
+      ccWidget.conversions.splice(0, 0,
+        new Conversion({
+          format: newFormat
+        }));     
+      
+          const layerList = new LayerList({
+              view: view
+          });
+          view.ui.add(layerList,"top-right");
+
+          const sketch = new Sketch({
+            layer: graphicsLayer,
+            view: view,
+            creationMode: "update"    // graphic will be selected as soon as it is created
+          });
+
+        view.ui.add(sketch, "top-right");  
+
+        //  view.popupEnabled = false;
+        //  view.on("click", (event) => {
+        //   // Get the coordinates of the click on the view
+        //   const lat = Math.round(event.mapPoint.latitude * 100000) / 100000;
+        //   const lon = Math.round(event.mapPoint.longitude * 100000) / 100000;
+        //   var point = view.toMap({x: lon, y: lat});
+        //   bob = demImageLayer.identify(event.mapPoint);
+        
+        //    bob.then((response) => {
+        //     console.log(response);
+        //     const Cathy = Math.round(response.value * 10) / 10;
+        //     view.openPopup({
+        //     // Set the popup's title to the coordinates of the location
+        //     title: "Lat, Lon, Depth(m): " + lat + ", " + lon + ", " + Cathy,
+        //     location: event.mapPoint // Set the location of the popup to the clicked location
+        //   });
+        //   })
+        //   .catch(() => {
+        //     Cathy = "Alex";
+        //   });
+
+        //   const params = {
+        //     location: event.mapPoint
+        //   };       
+        //  });
+      });
+    </script>
+  
+</head>
+
+<body>
+  <div id="anonymousPanel" style="display: none; padding: 5px; text-align: center;">
+    <span id="sign-in" class="action">Sign In</span> and view your ArcGIS Online items.
+  </div>
+  <button id="sign-in" class="btn btn-primary">Sign In</button>
+  <button id="sign-out" class="btn btn-primary">Sign Out</button>
+  <pre><code id="results"></code></pre>
+
+  <div id="viewDiv"></div>
+ <!--- <span id="info" style="position:absolute; left:25px; bottom: 25px; color:#060606; z-index:50;"></span>->
+</body>
+
+</html>

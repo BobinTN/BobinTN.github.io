@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>WeAppT2</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      margin: auto;
+      padding: 10px;
+      height: 95%;
+      width: 95%;
+    }
+    #myIframe {
+    width: 100%;
+    height: 80%;
+}
+  </style>
+  </head>
+
+  <body>
+
+    <h1>The iframe element</h1>
+    <button type="button" onClick="document.getElementById('myIframe').src='https://404396dle:3344/webappbuilder/apps/3/index.html?config=config_NAS.json'">Nashville</button>
+    <button type="button" onClick="document.getElementById('myIframe').src='https://404396dle:3344/webappbuilder/apps/3/index.html?config=config_ATL.json'">Atlanta</button>
+    <button type="button" onClick="document.getElementById('myIframe').src='https://404396dle:3344/webappbuilder/apps/3/index.html?config=config_FKT.json'">Frankfort</button>
+<!--    <a href="https://3utech.maps.arcgis.com/apps/webappviewer/index.html?id=ff14a62f1f8b4aeb9ec3c156acf93bed" target="myIframe">Link 1</a>
+    <a href="https://esri.com" target="myIframe">Link 2</a>
+    <a href="https://facebook.com" target="myIframe">Link 3</a>
+    <input type="button" value="Change WebApp" /> -->
+    <iframe id="myIframe" src="https://3utech.maps.arcgis.com/apps/webappviewer/index.html?id=ff14a62f1f8b4aeb9ec3c156acf93bed" title="Hello Bob"\>   
+ <!--     <a href="https://3utech.maps.arcgis.com/apps/webappviewer/index.html?id=ff14a62f1f8b4aeb9ec3c156acf93bed">
+        <div id="viewDiv">
+            Hello world
+        </div>
+    </a> 
+  <div id="viewDiv"<a href="https://www.w3schools.com">Visit W3Schools</a>>Hello Bob</div> -->
+  </body>
+  
+  </html>

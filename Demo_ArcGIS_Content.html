@@ -1,0 +1,13 @@
+<div><script>document.querySelector('body').classList.add('lfr-spa-loading');</script>
+    <div id="arcgis-embed-container"><iframe onload="
+            const iFrame = document.createElement('iframe');
+            iFrame.src = 'https://arcgis.demo.preptoolkit.org/portal/apps/experiencebuilder/experience/?id=bd43b79ee09246c980cac17177e0aedd';
+            iFrame.style.cssText = 'width: 90vw; height: 90vh; margin: 0 0 0 calc(-45vw + 50%); padding: 0;';
+            iFrame.onload = () =&gt; document.querySelector('body').classList.remove('lfr-spa-loading');
+            const container = document.querySelector('#arcgis-embed-container');
+            while (container.firstChild) {
+              container.removeChild(container.lastChild);
+            }
+            container.appendChild(iFrame);
+          " src="https://www.demo.preptoolkit.org/pt/api/v1/arcgis/sso/sign-in?groupSource=pt&amp;redirect=https%3A%2F%2Farcgis.demo.preptoolkit.org%2Fportal%2Fsharing%2Foauth2%2Fauthorize%3Fsso%3Dfalse%26client_id%3Dopsdashboard%26redirect_uri%3Dhttps%253A%252F%252Farcgis.demo.preptoolkit.org%252Fportal%252Fapps%252Fopsdashboard%252Findex.html%26response_type%3Dtoken%26state%3D%7B%22portalUrl%22%3A%22https%3A%2F%2Farcgis.demo.preptoolkit.org%2Fportal%22%7D" style="display: none;"></iframe></div>
+    </div>
