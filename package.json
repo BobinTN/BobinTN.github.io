@@ -1,0 +1,15 @@
+{
+   "name": "authtest2",
+   "version": "1.0.0",
+   "main": "main.js",
+   "scripts": {
+      "start": "vite"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "description": "",
+   "dependencies": {
+      "vite": "^5.0.0"
+   }
+}
