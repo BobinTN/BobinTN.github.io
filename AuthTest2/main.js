@@ -4,7 +4,7 @@ import WebMap from 'https://js.arcgis.com/4.28/@arcgis/core/WebMap.js';
 import MapView from 'https://js.arcgis.com/4.28/@arcgis/core/views/MapView.js';
 
 import { initialize, checkCurrentStatus, signIn, signOut} from './oauth.js';
-//import './style.css';
+import './style.css';
 
 const APP_ID = import.meta.env.VITE_APP_ID;
 
