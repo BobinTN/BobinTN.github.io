@@ -33,10 +33,9 @@
         var SQL_CityAbbr = "abbreviati = '" + CityAbbr + "'";
         var SQL_cityYield = "yield = '" + cityYield + "'";
         var DL_SQL = SQL_CityAbbr;
-        var HZ_SQL = "Scenario = '" + CityAbbr + "_" + HZYield + "_" + HZweather + "'";
-        //alert(HZ_SQL);
-        var DZ_SQL = SQL_CityAbbr + " AND " + SQL_cityYield;
 
+        var DZ_SQL = SQL_CityAbbr + " AND " + SQL_cityYield;
+        var HZ_SQL = DZ_SQL;
         const DLFLayer = new FeatureLayer({
           url: "https://services3.arcgis.com/DCP1gSPLBnu7BSDG/arcgis/rest/services/Detonation_Locations/FeatureServer",
           definitionExpression: DL_SQL 

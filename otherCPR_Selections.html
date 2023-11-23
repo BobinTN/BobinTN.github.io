@@ -24,13 +24,9 @@
         const city = urlParams.get('city');
         const pdflink = urlParams.get('pdflink');
 
-
-
-    window.onload = function(){
+        window.onload = function(){
         document.getElementById("city").innerHTML = city;
-        // myArray = [[1,2,3],
-        //         [2,3,5],
-        //         [1,4,5]];
+     
        myCityArr = 
        [['ALB','Albany','NY','42.6525803','-73.7562332'],
         ['ABQ','Albuquerque','NM','35.0864563','-106.6487656'],
@@ -105,10 +101,9 @@
         ['100Mt at 10,000 ft','1Mt']];
 
         myWeatherArr = ['All Year','Winter','Spring','Summer','Fall'];
-
  
        var s = document.getElementById('cityid');
-       //var words = ["one", "two", "three", "four", "five"];
+
        for(var i = 0; i < myCityArr.length; i++){
         var t = document.createElement("option")
          t.value = myCityArr[i][1];

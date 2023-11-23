@@ -24,13 +24,9 @@
         const city = urlParams.get('city');
         const pdflink = urlParams.get('pdflink');
 
-
-
     window.onload = function(){
         document.getElementById("city").innerHTML = city;
-        // myArray = [[1,2,3],
-        //         [2,3,5],
-        //         [1,4,5]];
+
        myCityArr = 
        [['ALB','Albany','NY','42.6525803','-73.7562332'],
         ['ABQ','Albuquerque','NM','35.0864563','-106.6487656'],
@@ -105,10 +101,9 @@
         ['100Mt at 10,000 ft','1Mt']];
 
         myWeatherArr = ['All Year','Winter','Spring','Summer','Fall'];
-
  
        var s = document.getElementById('cityid');
-       //var words = ["one", "two", "three", "four", "five"];
+ 
        for(var i = 0; i < myCityArr.length; i++){
         var t = document.createElement("option")
          t.value = myCityArr[i][1];
@@ -136,53 +131,57 @@
          s.appendChild(t)
        }
 
-        function changeOAuthStorage() {
-          alert("Hello from changeOauthStorage");
-          // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
-          const key = 'esriJSAPIOAuth';
-          if (window && window.sessionStorage) {
-            const oauth = window.sessionStorage.getItem(key);
-            if (!oauth) {
-              alert('No oauth');
-              return;
-            }
-            const oauthObj = JSON.parse(oauth);
-            if (window.localStorage) {
-              const localStorageoAuths =  window.localStorage.getItem(key);
-              if (!localStorageoAuths) {
-                alert("NOT localStorageoUaths");
-                window.localStorage.setItem(key, JSON.stringify(oauthObj));
-                window.sessionStorage.removeItem(key);
-                return;
-              }
-              const lsAuth = JSON.parse(localStorageoAuths);
-              alert(lsAuth);
-              lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
-              window.localStorage.setItem(key, JSON.stringify(lsAuth));
-              window.sessionStorage.removeItem(key);
-            }
-          }
+        // function changeOAuthStorage() {
+        //   alert("Hello from changeOauthStorage");
+        //   // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
+        //   const key = 'esriJSAPIOAuth';
+        //   if (window && window.sessionStorage) {
+        //     const oauth = window.sessionStorage.getItem(key);
+        //     if (!oauth) {
+        //       alert('No oauth');
+        //       return;
+        //     }
+        //     const oauthObj = JSON.parse(oauth);
+        //     if (window.localStorage) {
+        //       const localStorageoAuths =  window.localStorage.getItem(key);
+        //       if (!localStorageoAuths) {
+        //         alert("NOT localStorageoUaths");
+        //         window.localStorage.setItem(key, JSON.stringify(oauthObj));
+        //         window.sessionStorage.removeItem(key);
+        //         return;
+        //       }
+        //       const lsAuth = JSON.parse(localStorageoAuths);
+        //       alert(lsAuth);
+        //       lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
+        //       window.localStorage.setItem(key, JSON.stringify(lsAuth));
+        //       window.sessionStorage.removeItem(key);
+        //     }
+        //   }
         }
 
         function getSelectedValue() {
             var cmbxCity = document.getElementById("cityid");
+            //alert(cmbxCity)
             var cmbxYield = document.getElementById("yieldid");
             var cmbxWeather = document.getElementById("weatherid");
             var selCity = cmbxCity.value;
+            alert(selCity);
             var selYield = cmbxYield.value;
             var selWeather = cmbxWeather.value;
-            //alert("Selected City: " + selCity + "\nSelected Yield: " + selYield + "\nSelected Weather: " + selWeather);
+            selWeather = selWeather.replace(/\s+/g, '');
+            alert("Selected City: " + selCity + "\nSelected Yield: " + selYield + "\nSelected Weather: " + selWeather);
             CityArr = getValArr(myCityArr,selCity,1);
             cityLon = CityArr[4];
             cityLat = CityArr[3];
+            cityAbbr = CityArr[0];
             YldArr = getValArr(myYieldArr,selYield,0);
             YldVal = YldArr[1];
-            myHTML = "DemoPortal.html?cityName=" + selCity + 
+            myHTML = "DemoPortal.html?cityName=" + cityAbbr + 
             "&cityLon=" + cityLon +
             "&cityLat=" + cityLat +
             "&yieldType=" + YldVal + 
             "&weatherType=" + selWeather;
-            //alert(myHTML);
+            alert(myHTML);
             //changeOAuthStorage();
             document.getElementById('myIframe').src = myHTML; 
         }
@@ -206,7 +205,7 @@
         {
             getSelectedValue();
         };
-    };
+   
 
     </script>
 </head>
@@ -228,6 +227,6 @@
         <option value="value3">Value 3</option>
     </select> -->
     <!-- <button onclick="getSelectedValue()">Get Selected Value</button> -->
-    <iframe id="myIframe" name="myIframe" src="DemoPortal.html?cityName=Albany&cityLon=-73.756232&cityLat=42.652579&yieldType=1%20kt&weatherType=All+Year" title="Hello Bob"\>   
+    <iframe id="myIframe" name="myIframe" src="DemoPortal.html?cityName=ALB&cityLon=-73.756232&cityLat=42.652579&yieldType=1%20kt&weatherType=AllYear" title="Hello Bob"\>   
 </body>
 </html>

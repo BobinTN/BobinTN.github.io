@@ -17,83 +17,29 @@
 
     <script src="https://js.arcgis.com/4.27/"></script>
     <script>
-      //    window.onload = function(){
-      //       const urlParams = new URLSearchParams(window.location.search);
-      //       const cityValue = urlParams.get('cityName');
-      //       // var spanCity = document.getElementById("result-cityName")
-      //       // spanCity.textContent = cityValue;
-      //       const yieldValue = urlParams.get('yieldType');
-      //       // var spanYield = document.getElementById("result-yieldType")
-      //       // spanYield.textContent = yieldValue;            
-      //       const weatherValue = urlParams.get('weatherType');
-      //       // var spanWeather = document.getElementById("result-weatherType")
-      //       // spanWeather.textContent = weatherValue; 
-             //DL_SQL = "city = '" + cityValue + "'";
-              
-      //       // alert("City Name: " + cityValue +
-      //       //     "\nYield Type: " + yieldValue +
-      //       //     "\nWeather Type: " + weatherValue +
-      //       //     "\nmyCity: " + myCity);
-      //     } 
-      // //var myCity = "city = 'Albany'";
       var myZoom = 11;
                
       require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer", "esri/core/urlUtils"], (Map, MapView, FeatureLayer,urlUtils) => {
 
-        // changeOAuthStorage();
-        // function changeOAuthStorage() {
-        //   // REMOVE ANY ESRIJSAPIOAUTH entries in the session or local storages
-        //   const key = 'esriJSAPIOAuth';
-        //   if (window && window.sessionStorage) {
-        //     const oauth = window.sessionStorage.getItem(key);
-        //     if (!oauth) {
-        //       return;
-        //     }
-        //     const oauthObj = JSON.parse(oauth);
-        //     if (window.localStorage) {
-        //       const localStorageoAuths =  window.localStorage.getItem(key);
-        //       if (!localStorageoAuths) {
-        //         window.localStorage.setItem(key, JSON.stringify(oauthObj));
-        //         window.sessionStorage.removeItem(key);
-        //         return;
-        //       }
-        //       const lsAuth = JSON.parse(localStorageoAuths);
-        //       lsAuth['/'] = {...lsAuth['/'], ...oauthObj['/']};
-        //       window.localStorage.setItem(key, JSON.stringify(lsAuth));
-        //       window.sessionStorage.removeItem(key);
-        //     }
-        //   }
-        // }
-
-
-
         var params = urlUtils.urlToObject(document.location.href);
-        var CityName = params.query.cityName;
+        var CityAbbr = params.query.cityName;
         var cityLon = Number(params.query.cityLon);
         var cityLat = Number(params.query.cityLat);
         var cityCenter = [cityLon,cityLat];
-        var CityYield = params.query.yieldType;
+        var cityYield = params.query.yieldType;
+        HZYield = cityYield.replace(/\s+/g, '');
         var cityWeather = params.query.weatherType;
+        var HZweather = cityWeather.replace(/\s+/g, '');
+        var SQL_CityAbbr = "abbreviati = '" + CityAbbr + "'";
+        var SQL_cityYield = "yield = '" + cityYield + "'";
+        var DL_SQL = SQL_CityAbbr;
 
-        var SQL_cityName = "city = '" + CityName + "'";
-        var SQL_cityYield = "yield = '" + CityYield + "'";
-        var DL_SQL = SQL_cityName;
-        //var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
-        var DZ_SQL = SQL_cityName;
-        //alert(DZ_SQL);
-        //var myCenter = cityPoint;
-        //var myCenter = [-86.782, 36.161] 
-          // var filter = null, exp = null;
-          // if (urlObject.query !== null) {
-          //   if (urlObject.query.filter) {
-          //     filter = urlObject.query.filter;
-          //   }
-          // }
-
-          // if (filter !== null) {
-          //   exp = "Locality = '" + filter + "'";
-          // }
-  
+        var DZ_SQL = SQL_CityAbbr + " AND " + SQL_cityYield;
+        var HZ_SQL = DZ_SQL;
+        // var SQL_cityName = "city = '" + CityName + "'";
+        // var SQL_cityYield = "yield = '" + CityYield + "'";
+        // var DL_SQL = SQL_cityName;
+        // var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
 
         const DLFLayer = new FeatureLayer({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Detonation_Locations/FeatureServer",
@@ -104,12 +50,22 @@
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Damage_Zones/FeatureServer",
           definitionExpression: DZ_SQL
         });
+
+        const HZFLayer = new FeatureLayer({
+          url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Maximum_Extent_Hot_Zone_ByScenario/FeatureServer",
+          definitionExpression: HZ_SQL 
+        });
+
+        const DRZFLayer = new FeatureLayer({
+          url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Maximum_Extent_Dangerous_Fallout_Zone_ByScenario/FeatureServer",
+          definitionExpression: HZ_SQL 
+        });
         const map = new Map({
           basemap: "topo-vector",
-          layers: [DLFLayer,DZFLayer]
+          layers: [DLFLayer,DZFLayer,HZFLayer,DRZFLayer]
         });
-        map.add(DZFLayer,0);
-        map.add(DLFLayer,1);
+        // map.add(DZFLayer,0);
+        // map.add(DLFLayer,1);
         const view = new MapView({
           container: "viewDiv",
           map: map,
@@ -123,18 +79,6 @@
 
   <body>
     <div id="viewDiv">
-  <!-- <h1>
-        Result Page
-    </h1>
-    <h2>
-        City: <span id="result-cityName"></span>
-    </h2>
-    <h2>
-        Yield: <span id="result-yieldType" />
-    </h2>
-    <h2>
-        Weather: <span id="result-weatherType" />
-    <h/2> -->
     </div>
  
   </body>
