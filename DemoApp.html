@@ -131,14 +131,38 @@
       console.log("cityAbbr: " + cityAbbr + "\ncityLon: " + cityLon.toString() + "\ncityLat: " + cityLat.toString())
       console.log("cityLon: " + cityLon.toString() + " cityLat: " + cityLat.toString())
 
-      const map = new WebMap({
+      const webmap = new WebMap({
         portalItem: {
           id: webmapId
         }
       });
+
+      var DetLoc;
+      webmap.loadAll().then(()=>{
+        // loop through all operational layers in your webmap
+        webmap.layers.forEach((layer)=>{
+          console.log("layer.id", layer.id, layer);
+          // check your layer here
+          if (layer.title === "Detonation_Locations") {
+            layer.definitionExpression = DL_SQL;
+          };
+          if (layer.title === "Damage_Zones") {
+            layer.definitionExpression = DZ_SQL;
+          };
+          if (layer.title === "Dangerous Radiation Zones") {
+            layer.definitionExpression = Scenario_SQL;
+          };
+          if (layer.title === "Maximum Extent of the Hot Zone") {
+            layer.definitionExpression = Scenario_SQL;
+          };
+
+          });
+         });
+
+
       var myZoom = 11;
       const view = new MapView({
-        map,
+        webmap,
         zoom: myZoom,
         center: cityCenter, // longitude, latitude
         container: "viewDiv",
@@ -175,8 +199,8 @@
         container: "print-container"
       });
 
-      map.when(() => {
-        const { title, description, thumbnailUrl, avgRating } = map.portalItem;
+      webmap.when(() => {
+        const { title, description, thumbnailUrl, avgRating } = webmap.portalItem;
         document.querySelector("#header-title").textContent = title;
         document.querySelector("#item-description").innerHTML = description;
         document.querySelector("#item-thumbnail").src = thumbnailUrl;
