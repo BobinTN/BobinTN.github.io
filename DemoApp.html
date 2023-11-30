@@ -110,7 +110,7 @@
             // "https://apsu-admin.maps.arcgis.com";
             // "https://arcgis.demo.preptoolkit.org/portal;";
             //  "https://3utech.maps.arcgis.com/";
-      var params = urlUtils.urlToObject(document.location.href);
+      var params = new URLSearchParams(window.location.search);
       var cityAbbr = params.get("cityName");
       console.log("Bob: " + cityAbbr)
 
