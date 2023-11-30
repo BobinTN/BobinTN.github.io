@@ -131,16 +131,16 @@
       console.log("cityAbbr: " + cityAbbr + "\ncityLon: " + cityLon.toString() + "\ncityLat: " + cityLat.toString())
       console.log("cityLon: " + cityLon.toString() + " cityLat: " + cityLat.toString())
 
-      const webmap = new WebMap({
+      const map = new WebMap({
         portalItem: {
           id: webmapId
         }
       });
 
       var DetLoc;
-      // webmap.loadAll().then(()=>{
-      //   // loop through all operational layers in your webmap
-      //   webmap.layers.forEach((layer)=>{
+      // map.loadAll().then(()=>{
+      //   // loop through all operational layers in your map
+      //   map.layers.forEach((layer)=>{
       //     console.log("layer.id", layer.id, layer);
       //     // check your layer here
       //     if (layer.title === "Detonation_Locations") {
@@ -162,7 +162,7 @@
 
       var myZoom = 11;
       const view = new MapView({
-        webmap,
+        map,
         zoom: myZoom,
         center: cityCenter, // longitude, latitude
         container: "viewDiv",
@@ -199,8 +199,8 @@
         container: "print-container"
       });
 
-      webmap.when(() => {
-        //webmap.layers.forEach((layer)=>{
+      map.when(() => {
+        //map.layers.forEach((layer)=>{
         //   console.log("layer.id", layer.id, layer);
         //   // check your layer here
         //   if (layer.title === "Detonation_Locations") {
@@ -219,7 +219,7 @@
         //   });
         //  });
 
-        const { title, description, thumbnailUrl, avgRating } = webmap.portalItem;
+        const { title, description, thumbnailUrl, avgRating } = map.portalItem;
         document.querySelector("#header-title").textContent = title;
         document.querySelector("#item-description").innerHTML = description;
         document.querySelector("#item-thumbnail").src = thumbnailUrl;
