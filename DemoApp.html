@@ -105,7 +105,7 @@
         esriConfig.portalUrl = "https://arcgis.demo.preptoolkit.org/portal";
         const params = new URLSearchParams(window.location.search);
         const webmapId = new URLSearchParams(window.location.search).get("webmap")
-        ?? "bffb830efcee476eabec7396e64c9cb0";
+        ?? "bffb830efcee476eabec7396e64c9cb0";  //CPR_Test2
         //var params = urlUtils.urlToObject(document.location.href);
         var cityAbbr = params.get("cityName");
         var cityLon = Number(params.get(cityLon));
@@ -125,7 +125,7 @@
         alert(DZ_SQL);     
       const map = new WebMap({
         portalItem: {
-          id: webmapId
+          id: "bffb830efcee476eabec7396e64c9cb0"
         }
       });
       const view = new MapView({
