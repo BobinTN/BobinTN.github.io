@@ -1,14 +1,11 @@
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Calcite Components: Create a mapping app</title>
-
+    <title>App: City Planning Resources ND</title>
     <script src="https://js.arcgis.com/calcite-components/1.11.0/calcite.esm.js" type="module"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.11.0/calcite.css" />
-
     <script src="https://js.arcgis.com/4.27/"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
     <link rel="shortcut icon" href="#">
@@ -22,38 +19,30 @@
       height: 100%;
       width: 100%;
     }
-
     body {
       display: flex;
     }
-
     calcite-loader {
       align-self: center;
       justify-self: center;
     }
-
     #header-title {
       margin-left: 1rem;
       margin-right: 1rem;
     }
-
     #info-content {
       padding: 0.75rem;
     }
-
     calcite-rating {
       margin-top: 0.25rem;
     }
-
   </style>
-
   <body>
     <calcite-loader></calcite-loader>
     <calcite-shell content-behind hidden>
       <h2 id="header-title" slot="header">
         <!-- Dynamically populated -->
       </h2>
-
       <calcite-shell-panel slot="panel-start" display-mode="float">
         <calcite-action-bar slot="action-bar">
           <calcite-action data-action-id="layers" icon="layers" text="Layers"></calcite-action>
@@ -111,16 +100,19 @@
       "esri/widgets/Print",
       "esri/config"
     ], function(WebMap, MapView, Bookmarks, BasemapGallery, LayerList, Legend, Print, esriConfig) {
-       esriConfig.portalUrl = "https://arcgis.demo.preptoolkit.org/portal";
-        const webmapId = new URLSearchParams(window.location.search).get("webmap")
+      esriConfig.portalUrl = "https://arcgis.demo.preptoolkit.org/portal";
+      const webmapId = new URLSearchParams(window.location.search).get("webmap")
         ?? "bffb830efcee476eabec7396e64c9cb0";  //DEMO Portal
-       // "210c5b77056846808c7a5ce93920be81";  //Original
-        // "bffb830efcee476eabec7396e64c9cb0";  //DEMO Portal
-        // "16e8d48059de4d948e10b00aac3569d4";  // 3uTech
-        // "28ca9f4c616e4f04b3127afd175d25b2";  // APSU Portal CPR_Test1
-        // "https://apsu-admin.maps.arcgis.com";
-        // "https://arcgis.demo.preptoolkit.org/portal;";
-        //  "https://3utech.maps.arcgis.com/";
+            // "210c5b77056846808c7a5ce93920be81";  //Original
+            // "bffb830efcee476eabec7396e64c9cb0";  //DEMO Portal
+            // "16e8d48059de4d948e10b00aac3569d4";  // 3uTech
+            // "28ca9f4c616e4f04b3127afd175d25b2";  // APSU Portal CPR_Test1
+            // "https://apsu-admin.maps.arcgis.com";
+            // "https://arcgis.demo.preptoolkit.org/portal;";
+            //  "https://3utech.maps.arcgis.com/";
+      var params = urlUtils.urlToObject(document.location.href);
+      var cityAbbr = params.get("cityName");
+      alert(cityAbbr)
 
       const map = new WebMap({
         portalItem: {
