@@ -112,7 +112,13 @@
             //  "https://3utech.maps.arcgis.com/";
       var params = new URLSearchParams(window.location.search);
       var cityAbbr = params.get("cityName");
+        var cityLon = Number(params.get(cityLon));
+        var cityLat = Number(params.get(cityLat));
+        var cityCenter = [cityLon,cityLat];
+
+
       console.log("Bob: " + cityAbbr)
+      console.log("Cathy: " + cityCenter)
 
       const map = new WebMap({
         portalItem: {
