@@ -102,30 +102,33 @@
       "esri/widgets/Print",
       "esri/config"
     ], function(FeatureLayer, WebMap, MapView, Bookmarks, BasemapGallery, LayerList, Legend, Print, esriConfig) {
-        esriConfig.portalUrl = "https://arcgis.demo.preptoolkit.org/portal";
-        const params = new URLSearchParams(window.location.search);
+        //esriConfig.portalUrl = "https://arcgis.demo.preptoolkit.org/portal";
+        // const params = new URLSearchParams(window.location.search);
         const webmapId = new URLSearchParams(window.location.search).get("webmap")
-        ?? "bffb830efcee476eabec7396e64c9cb0";  //CPR_Test2
-        //var params = urlUtils.urlToObject(document.location.href);
-        var cityAbbr = params.get("cityName");
-        var cityLon = Number(params.get(cityLon));
-        var cityLat = Number(params.get(cityLat));
-        var cityCenter = [cityLon,cityLat];
-        var cityYield = params.get("yieldType");
-        var HZYield = cityYield.replace(/\s+/g, '');
-        var cityWeather = params.get("weatherType");
-        var HZweather = cityWeather.replace(/\s+/g, '');
-        var SQL_cityAbbr = "abbreviati = '" + cityAbbr + "'";
-        var SQL_cityYield = "yield = '" + cityYield + "'";
-        var DL_SQL = SQL_cityAbbr;
-        var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
-        var Scenario_SQL = "Scenario = '" + Scenario + "'";
-        var DZ_SQL = SQL_cityAbbr + " AND " + SQL_cityYield;
-        var HZ_SQL = "Scenario = '" + cityAbbr + "'";
-        alert(DZ_SQL);     
+        ?? "210c5b77056846808c7a5ce93920be81";  //CPR_Test2
+        // //var params = urlUtils.urlToObject(document.location.href);
+        // var cityAbbr = params.get("cityName");
+        // var cityLon = Number(params.get(cityLon));
+        // var cityLat = Number(params.get(cityLat));
+        // var cityCenter = [cityLon,cityLat];
+        // var cityYield = params.get("yieldType");
+        // var HZYield = cityYield.replace(/\s+/g, '');
+        // var cityWeather = params.get("weatherType");
+        // var HZweather = cityWeather.replace(/\s+/g, '');
+        // var SQL_cityAbbr = "abbreviati = '" + cityAbbr + "'";
+        // var SQL_cityYield = "yield = '" + cityYield + "'";
+        // var DL_SQL = SQL_cityAbbr;
+        // var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
+        // var Scenario_SQL = "Scenario = '" + Scenario + "'";
+        // var DZ_SQL = SQL_cityAbbr + " AND " + SQL_cityYield;
+        // var HZ_SQL = "Scenario = '" + cityAbbr + "'";
+        // //alert(DZ_SQL);     
       const map = new WebMap({
         portalItem: {
-          id: "bffb830efcee476eabec7396e64c9cb0"
+          //id: "bffb830efcee476eabec7396e64c9cb0"
+          //id: "28ca9f4c616e4f04b3127afd175d25b2"  // APSU Portal CPR_Test1
+          //id: "210c5b77056846808c7a5ce93920be81"  //Original AGOL
+          id: webmapId
         }
       });
       const view = new MapView({
