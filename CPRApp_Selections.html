@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dropdown Combobox Example</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        html,
+        body,
+        #viewDiv {
+          margin: auto;
+          padding: 10px;
+          height: 95%;
+          width: 95%;
+        }
+        #myIframe {
+        width: 100%;
+        height: 80%;
+    }
+    </style>
+    <script type="text/javascript">
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const city = urlParams.get('city');
+        const pdflink = urlParams.get('pdflink');
+
+        window.onload = function(){
+            document.getElementById("city").innerHTML = city;
+
+        myCityArr = 
+        [['ALB','Albany','NY','42.6525803','-73.7562332'],
+            ['ABQ','Albuquerque','NM','35.0864563','-106.6487656'],
+            ['ATL','Atlanta','GA','33.7489967','-84.3879852'],
+            ['AUS','Austin','TX','30.2671528','-97.7430573'],
+            ['BAK','Bakersfield','CA','35.373291','-119.0187149'],
+            ['BAL','Baltimore','MD','39.2903862','-76.6121902'],
+            ['BOS','Boston','MA','42.3566628','-71.0558853'],
+            ['BUF','Buffalo','NY','42.8864479','-78.8783722'],
+            ['CHA','Charlotte','NC','35.2270851','-80.8431244'],
+            ['CHI','Chicago','IL','41.8781128','-87.6297989'],
+            ['CIN','Cincinnati','OH','39.1031189','-84.5120163'],
+            ['CLE','Cleveland','OH','41.499321','-81.6943588'],
+            ['CS','Colorado Springs','CO','38.8338814','-104.8213654'],
+            ['COL','Columbus','OH','39.9611778','-82.9987946'],
+            ['DAL','Dallas','TX','32.7766647','-96.7969894'],
+            ['DEN','Denver','CO','39.7392349','-104.9902496'],
+            ['DET','Detroit','MI','42.3314285','-83.0457535'],
+            ['ELP','El Paso','TX','31.7587051','-106.4909668'],
+            ['HAR','Hartford','CT','41.76371','-72.6850967'],
+            ['HOU','Houston','TX','29.7604275','-95.3698044'],
+            ['IND','Indianapolis','IN','39.7684021','-86.1580658'],
+            ['JAC','Jacksonville','FL','30.3321838','-81.6556473'],
+            ['KC','Kansas City','MO','39.0997276','-94.5785675'],
+            ['LV','Las Vegas','NV','36.1146927','-115.1728516'],
+            ['LA','Los Angeles','CA','34.0522346','-118.2436829'],
+            ['LOU','Louisville','KY','38.2526665','-85.7584534'],
+            ['MEM','Memphis','TN','35.1495323','-90.0489807'],
+            ['MIA','Miami','FL','25.7616806','-80.1917877'],
+            ['MIL','Milwaukee','WI','43.0389023','-87.9064713'],
+            ['MIN','Minneapolis','MN','44.9777527','-93.2650146'],
+            ['NAS','Nashville','TN','36.1626625','-86.781601'],
+            ['NO','New Orleans','LA','29.9510651','-90.0715332'],
+            ['NYC','New York','NY','40.7127838','-74.0059433'],
+            ['NWR','Newark','NJ','40.7356567','-74.1723633'],
+            ['NOR','Norfolk','VA','36.850769','-76.2858734'],
+            ['OKL','Oklahoma City','OK','35.4675598','-97.5164261'],
+            ['OMA','Omaha','NE','41.2637863','-95.9292755'],
+            ['ORL','Orlando','FL','28.5383358','-81.3792343'],
+            ['PHL','Philadelphia','PA','39.9525833','-75.1652222'],
+            ['PHX','Phoenix','AZ','33.4483757','-112.0740356'],
+            ['PIT','Pittsburgh','PA','40.4406242','-79.9913025'],
+            ['POR','Portland','OR','45.5230637','-122.6764832'],
+            ['PRO','Providence','RI','41.8239899','-71.4128342'],
+            ['RIC','Richmond','VA','37.5407257','-77.4360504'],
+            ['RIV','Riverside','CA','33.984951','-117.3724442'],
+            ['ROC','Rochester','NY','43.1610298','-77.6109238'],
+            ['SAC','Sacramento','CA','38.5815735','-121.4944'],
+            ['SLC','Salt Lake City','UT','40.7607803','-111.8910446'],
+            ['SA','San Antonio','TX','29.4241219','-98.4936295'],
+            ['SD','San Diego','CA','32.7157364','-117.161087'],
+            ['SF','San Francisco','CA','37.774929','-122.4194183'],
+            ['SJ','San Jose','CA','37.3382072','-121.8863297'],
+            ['SEA','Seattle','WA','47.6062088','-122.3320694'],
+            ['STL','St. Louis','MO','38.6270027','-90.1994019'],
+            ['SYR','Syracuse','NY','43.0481224','-76.1474228'],
+            ['TAM','Tampa','FL','27.9505749','-82.4571762'],
+            ['TOL','Toledo','OH','41.6500816','-83.5358963'],
+            ['TUC','Tucson','AZ','32.2171326','-110.9721146'],
+            ['TUL','Tulsa','OK','36.1539803','-95.992775'],
+            ['DC','Washington','DC','38.9071922','-77.0368729'],
+            ['ANC','Anchorage','AK','61.2180595','-149.9002838'],
+            ['HAG','Hagatna','GU','13.4762802','144.7502136'],
+            ['HON','Honolulu','HI','21.3069401','-157.8583374']];
+
+            myYieldArr = 
+            [['1kt at the surface','1 kt'],
+            ['10kt at the surface','10 kt'],
+            ['100kt at the surface','100 kt-surf'],
+            ['100kt at 1,000 ft','100 kt-1000ft'],
+            ['100kt at 5,000 ft','100 kt-5000ft'],
+            ['100Mt at 10,000 ft','1Mt']];
+
+            myWeatherArr = ['All Year','Winter','Spring','Summer','Fall'];
+    
+            var scityid = document.getElementById('cityid');
+ 
+            for(var i = 0; i < myCityArr.length; i++){
+                var t = document.createElement("option")
+                t.value = myCityArr[i][1];
+                t.textContent = t.value;
+                //t.textContent = words[myArray[0][i]-1];
+                //console.log(t.textContent)
+                scityid.appendChild(t)
+            }
+
+            var syieldid = document.getElementById('yieldid');
+            for(var i = 0; i < myYieldArr.length; i++){
+                var t = document.createElement("option")
+                t.value = myYieldArr[i][0];
+                t.textContent = t.value;
+                //console.log(t.textContent)
+                syieldid.appendChild(t)
+            }
+
+            var sweatherid = document.getElementById('weatherid');
+            for(var i = 0; i < myWeatherArr.length; i++){
+                var t = document.createElement("option")
+                t.value = myWeatherArr[i];
+                t.textContent = t.value;
+                sweatherid.appendChild(t)
+            }
+
+            function getSelectedValue() {
+                var cmbxCity = document.getElementById("cityid");
+                var cmbxYield = document.getElementById("yieldid");
+                var cmbxWeather = document.getElementById("weatherid");
+                var selCity = cmbxCity.value;
+                 var selYield = cmbxYield.value;
+                var selWeather = cmbxWeather.value;
+                selWeather = selWeather.replace(/\s+/g, '');
+                //alert("Selected City: " + selCity + "\nSelected Yield: " + selYield + "\nSelected Weather: " + selWeather);
+                CityArr = getValArr(myCityArr,selCity,1);
+                cityLon = CityArr[4];
+                cityLat = CityArr[3];
+                cityAbbr = CityArr[0];
+                YldArr = getValArr(myYieldArr,selYield,0);
+                YldVal = YldArr[1];
+                myHTML = "DemoMap.html?cityName=" + cityAbbr + 
+                "&cityLon=" + cityLon +
+                "&cityLat=" + cityLat +
+                "&yieldType=" + YldVal + 
+                "&weatherType=" + selWeather;
+                //alert(myHTML);
+                document.getElementById('myIframe').src = myHTML; 
+            }
+
+            function getValArr(theArr,Val,intPos){
+                for(var i = 0; i < theArr.length; i++){
+                    if (Val == theArr[i][intPos]){
+                        return  theArr[i];
+                    }
+                }
+            }
+
+            var myDiv = document.getElementById("viewDiv");
+ 
+            document.getElementById("cityid").onchange = function()
+            {
+                getSelectedValue();
+            };
+            document.getElementById("yieldid").onchange = function()
+            {
+                getSelectedValue();
+            };
+            document.getElementById("weatherid").onchange = function()
+            {
+                getSelectedValue();
+            };
+        }
+    </script>
+</head>
+
+<body>
+    <div id="'viewDiv">
+             <select name="cityName" id="cityid"></select>
+            <select name="yieldType" id="yieldid"></select>
+            <select name="weatherType" id="weatherid"></select>
+      <span id="city"></span>
+    </div>
+    <iframe id="myIframe" name="myIframe" src="DemoApp.html?cityName=ALB&cityLon=-73.756232&cityLat=42.652579&yieldType=1%20kt&weatherType=AllYear" title="Hello Bob"\>   
+</body>
+</html>

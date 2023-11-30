@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Open Current File",
              // "program": "${file}"
-             "file": "${file}?cityName=ALB&cityLon=-73.756232&cityLat=42.652579&yieldType=1%20kt&weatherType=AllYear"
+             "file": "${file}"
 
              //"file": "c:\\Bob\\!github\\BobinTN2\\BobinTN.github.io\\sample_DemoPortal.html"
         }

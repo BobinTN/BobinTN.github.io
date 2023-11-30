@@ -22,24 +22,21 @@
       require(["esri/Map", "esri/views/MapView","esri/layers/FeatureLayer", "esri/core/urlUtils"], (Map, MapView, FeatureLayer,urlUtils) => {
 
         var params = urlUtils.urlToObject(document.location.href);
-        var CityAbbr = params.query.cityName;
+        var cityAbbr = params.query.cityName;
         var cityLon = Number(params.query.cityLon);
         var cityLat = Number(params.query.cityLat);
         var cityCenter = [cityLon,cityLat];
         var cityYield = params.query.yieldType;
-        HZYield = cityYield.replace(/\s+/g, '');
+        var HZYield = cityYield.replace(/\s+/g, '');
         var cityWeather = params.query.weatherType;
         var HZweather = cityWeather.replace(/\s+/g, '');
-        var SQL_CityAbbr = "abbreviati = '" + CityAbbr + "'";
+        var SQL_cityAbbr = "abbreviati = '" + cityAbbr + "'";
         var SQL_cityYield = "yield = '" + cityYield + "'";
-        var DL_SQL = SQL_CityAbbr;
-
-        var DZ_SQL = SQL_CityAbbr + " AND " + SQL_cityYield;
-        var HZ_SQL = DZ_SQL;
-        // var SQL_cityName = "city = '" + CityName + "'";
-        // var SQL_cityYield = "yield = '" + CityYield + "'";
-        // var DL_SQL = SQL_cityName;
-        // var DZ_SQL = SQL_cityName + " AND " + SQL_cityYield;
+        var DL_SQL = SQL_cityAbbr;
+        var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
+        var Scenario_SQL = "Scenario = '" + Scenario + "'";
+        var DZ_SQL = SQL_cityAbbr + " AND " + SQL_cityYield;
+        var HZ_SQL = "Scenario = '" + cityAbbr + "'";
 
         const DLFLayer = new FeatureLayer({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Detonation_Locations/FeatureServer",
@@ -53,19 +50,19 @@
 
         const HZFLayer = new FeatureLayer({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Maximum_Extent_Hot_Zone_ByScenario/FeatureServer",
-          definitionExpression: HZ_SQL 
+          definitionExpression: Scenario_SQL 
         });
 
         const DRZFLayer = new FeatureLayer({
           url: "https://arcgis.demo.preptoolkit.org/server/rest/services/Hosted/Maximum_Extent_Dangerous_Fallout_Zone_ByScenario/FeatureServer",
-          definitionExpression: HZ_SQL 
+          definitionExpression: Scenario_SQL,
+          visible: false
         });
         const map = new Map({
           basemap: "topo-vector",
           layers: [DLFLayer,DZFLayer,HZFLayer,DRZFLayer]
         });
-        // map.add(DZFLayer,0);
-        // map.add(DLFLayer,1);
+
         const view = new MapView({
           container: "viewDiv",
           map: map,
@@ -73,10 +70,8 @@
           center: cityCenter // longitude, latitude
         });
       });
-    </script>
-    
+    </script> 
   </head>
-
   <body>
     <div id="viewDiv">
     </div>
