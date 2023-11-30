@@ -136,9 +136,11 @@
           id: webmapId
         }
       });
-
+      var myZoom = 11;
       const view = new MapView({
         map,
+        zoom: myZoom,
+        center: cityCenter, // longitude, latitude
         container: "viewDiv",
         padding: {
           left: 49
