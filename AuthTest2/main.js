@@ -7,7 +7,7 @@ import { initialize, checkCurrentStatus, signIn, signOut} from './oauth.js';
 //import './style.css';
 
 //const APP_ID = import.meta.env.VITE_APP_ID;
-const APP_ID = 'UXot56dujRmc6J0r'    
+const APP_ID = 'n4258Po67A3jM0zzv'    
 //UUNJfG1inqh2UohO-3utech    
 //n4258Po67A3jM0zzv-APSU
 // UXot56dujRmc6J0r - Demo AuthTest
@@ -20,8 +20,8 @@ async function loadMap(){
 const webmap = new WebMap({
     portalItem: {
         //id: '16e8d48059de4d948e10b00aac3569d4'  // 3utech-Oropa_AOI_3_working
-        id: 'bffb830efcee476eabec7396e64c9cb0'   // Demo - CPR_Test2
-        //id: '28ca9f4c616e4f04b3127afd175d25b2'  //APSU CPR_Test1
+        //id: 'bffb830efcee476eabec7396e64c9cb0'   // Demo - CPR_Test2
+        id: '28ca9f4c616e4f04b3127afd175d25b2'  //APSU CPR_Test1
     }
 });
 
