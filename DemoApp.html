@@ -120,7 +120,7 @@
       var cityWeather = params.get("weatherType");
       var HZweather = cityWeather.replace(/\s+/g, '');
       var SQL_cityAbbr = "abbreviati = '" + cityAbbr + "'";
-      var SQL_cityYield = "yield = '" + cityYield + "'";
+      var SQL_cityYield = "yield = '" + HZYield + "'";
       var DL_SQL = SQL_cityAbbr;
       var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
       var Scenario_SQL = "Scenario = '" + Scenario + "'";
