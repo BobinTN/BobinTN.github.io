@@ -119,10 +119,17 @@
       var HZYield = cityYield.replace(/\s+/g, '');
       var cityWeather = params.get("weatherType");
       var HZweather = cityWeather.replace(/\s+/g, '');
-
+      var SQL_cityAbbr = "abbreviati = '" + cityAbbr + "'";
+      var SQL_cityYield = "yield = '" + cityYield + "'";
+      var DL_SQL = SQL_cityAbbr;
+      var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
+      var Scenario_SQL = "Scenario = '" + Scenario + "'";
+      var DZ_SQL = SQL_cityAbbr + " AND " + SQL_cityYield;
+      var HZ_SQL = "Scenario = '" + cityAbbr + "'";
+      console.log("DZ_SQL: " + DZ_SQL);     
 
       console.log("cityAbbr: " + cityAbbr)
-      console.log("cityLon: " + cityLon + " cityLat: " + cityLat)
+      //console.log("cityLon: " + cityLon + " cityLat: " + cityLat)
 
       const map = new WebMap({
         portalItem: {
