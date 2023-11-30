@@ -112,8 +112,8 @@
             //  "https://3utech.maps.arcgis.com/";
       var params = new URLSearchParams(window.location.search);
       var cityAbbr = params.get("cityName");
-      var cityLon = Number(params.get(cityLon));
-      var cityLat = Number(params.get(cityLat));
+      var cityLon = Number(params.get("cityLon"));
+      var cityLat = Number(params.get("cityLat"));
       var cityCenter = [cityLon,cityLat];
       var cityYield = params.get("yieldType");
       var HZYield = cityYield.replace(/\s+/g, '');
