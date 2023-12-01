@@ -137,7 +137,7 @@
         }
       });
 
-      var DetLoc;
+      //var DetLoc;
       // map.loadAll().then(()=>{
       //   // loop through all operational layers in your map
       //   map.layers.forEach((layer)=>{
@@ -200,25 +200,6 @@
       });
 
       map.when(() => {
-        //map.layers.forEach((layer)=>{
-        //   console.log("layer.id", layer.id, layer);
-        //   // check your layer here
-        //   if (layer.title === "Detonation_Locations") {
-        //     layer.definitionExpression = DL_SQL;
-        //   };
-        //   if (layer.title === "Damage_Zones") {
-        //     layer.definitionExpression = DZ_SQL;
-        //   };
-        //   if (layer.title === "Dangerous Radiation Zones") {
-        //     layer.definitionExpression = Scenario_SQL;
-        //   };
-        //   if (layer.title === "Maximum Extent of the Hot Zone") {
-        //     layer.definitionExpression = Scenario_SQL;
-        //   };
-
-        //   });
-        //  });
-
         const { title, description, thumbnailUrl, avgRating } = map.portalItem;
         document.querySelector("#header-title").textContent = title;
         document.querySelector("#item-description").innerHTML = description;
