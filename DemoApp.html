@@ -112,24 +112,30 @@
             //  "https://3utech.maps.arcgis.com/";
       var params = new URLSearchParams(window.location.search);
       var cityAbbr = params.get("cityName");
+      console.log("cityAbbr: " + cityAbbr);
       var cityLon = Number(params.get("cityLon"));
       var cityLat = Number(params.get("cityLat"));
+      console.log("cityCenter: " + cityLon.toString() + ", " + cityLat.toString());
       var cityCenter = [cityLon,cityLat];
       var cityYield = params.get("yieldType");
+      console.log("cityYield: " + cityYield);
       var HZYield = cityYield.replace(/\s+/g, '');
       var cityWeather = params.get("weatherType");
+      console.log("cityWeather: " + cityWeather);
       var HZweather = cityWeather.replace(/\s+/g, '');
       var SQL_cityAbbr = "abbreviati = '" + cityAbbr + "'";
-      var SQL_cityYield = "yield = '" + HZYield + "'";
+      console.log("SQL_cityAbbr: " + SQL_cityAbbr); 
+      var SQL_cityYield = "yield = '" + cityYield + "'";
+      console.log("SQL_cityYield: " + SQL_cityYield); 
       var DL_SQL = SQL_cityAbbr;
+      console.log("DL_SQL: " + DL_SQL); 
       var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
       var Scenario_SQL = "Scenario = '" + Scenario + "'";
+      console.log("Scenario_SQL: " + Scenario_SQL); 
       var DZ_SQL = SQL_cityAbbr + " AND " + SQL_cityYield;
+      console.log("DZ_SQL: " + DZ_SQL); 
       var HZ_SQL = "Scenario = '" + cityAbbr + "'";
-      console.log("DZ_SQL: " + DZ_SQL);     
-
-      console.log("cityAbbr: " + cityAbbr + "\ncityLon: " + cityLon.toString() + "\ncityLat: " + cityLat.toString())
-      console.log("cityLon: " + cityLon.toString() + " cityLat: " + cityLat.toString())
+      console.log("HZ_SQL: " + HZ_SQL); 
 
       const map = new WebMap({
         portalItem: {
@@ -137,27 +143,26 @@
         }
       });
 
-      //var DetLoc;
-      // map.loadAll().then(()=>{
-      //   // loop through all operational layers in your map
-      //   map.layers.forEach((layer)=>{
-      //     console.log("layer.id", layer.id, layer);
-      //     // check your layer here
-      //     if (layer.title === "Detonation_Locations") {
-      //       layer.definitionExpression = DL_SQL;
-      //     };
-      //     if (layer.title === "Damage_Zones") {
-      //       layer.definitionExpression = DZ_SQL;
-      //     };
-      //     if (layer.title === "Dangerous Radiation Zones") {
-      //       layer.definitionExpression = Scenario_SQL;
-      //     };
-      //     if (layer.title === "Maximum Extent of the Hot Zone") {
-      //       layer.definitionExpression = Scenario_SQL;
-      //     };
-
-      //     });
-      //    });
+      var DetLoc;
+      map.loadAll().then(()=>{
+      // loop through all operational layers in your map
+         map.layers.forEach((layer)=>{
+           //console.log("layer.id", layer.id, layer);
+           // check your layer here
+          if (layer.title === "Detonation_Locations") {
+             layer.definitionExpression = DL_SQL;
+          };
+          if (layer.title === "Damage_Zones") {
+             layer.definitionExpression = DZ_SQL;
+          };
+          if (layer.title === "Dangerous Radiation Zones") {
+             layer.definitionExpression = Scenario_SQL;
+          };
+          if (layer.title === "Maximum Extent of the Hot Zone") {
+             layer.definitionExpression = Scenario_SQL;
+          };
+         });
+      });
 
 
       var myZoom = 11;
