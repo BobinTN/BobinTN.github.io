@@ -21,14 +21,21 @@
     }
     body {
       display: flex;
+
     }
     calcite-loader {
       align-self: center;
       justify-self: center;
     }
+    h1 {
+      font-size: 20px;
+      color: white;
+    }
     #header-title {
       margin-left: 1rem;
-      margin-right: 1rem;
+      margin-right: 0rem;
+      margin-top: 0rem;
+      height: 20px;
     }
     #info-content {
       padding: 0.75rem;
@@ -36,14 +43,36 @@
     calcite-rating {
       margin-top: 0.25rem;
     }
+    calcite-shell {
+      /* --calcite-ui-background: #f00; */
+      --calcite-ui-foreground-1: #566373;
+    }
+    /* calcite-action-bar {
+      --calcite-ui-foreground-1: #eff1f3; 
+    } */
+    calcite-action {
+      --calcite-ui-foreground-1: rgb(255, 255, 255);
+      --calcite-ui-text-3:var(--calcite-ui-text-3)
+    }
+    calcite-panel {
+      /* --calcite-ui-background: #f00; */
+      --calcite-ui-foreground-1: #566373;
+      --calcite-ui-text-2: rgb(253, 252, 252);
+      --calcite-font-size-1:var(--calcite-font-size-1);
+    }
+    /* layers-container {
+      font-size: 20px;
+      color: white;
+    } */
   </style>
+   <!-- <body  class="calcite-mode-dark"> -->
   <body>
     <calcite-loader></calcite-loader>
     <calcite-shell content-behind hidden>
-      <h2 id="header-title" slot="header">
+      <h1 id="header-title" slot="header">
         <!-- Dynamically populated -->
-      </h2>
-      <calcite-shell-panel slot="panel-start" display-mode="float">
+      </h1>
+       <calcite-shell-panel slot="panel-start" display-mode="float">
         <calcite-action-bar slot="action-bar">
           <calcite-action data-action-id="layers" icon="layers" text="Layers"></calcite-action>
           <calcite-action data-action-id="basemaps" icon="basemap" text="Basemaps"></calcite-action>
@@ -130,6 +159,7 @@
       var DL_SQL = SQL_cityAbbr;
       console.log("DL_SQL: " + DL_SQL); 
       var Scenario = cityAbbr + "_" + HZYield +"_" + HZweather;
+      var mapTitle = cityAbbr + " " + HZYield +" " + HZweather;
       var Scenario_SQL = "Scenario = '" + Scenario + "'";
       console.log("Scenario_SQL: " + Scenario_SQL); 
       var DZ_SQL = SQL_cityAbbr + " AND " + SQL_cityYield;
@@ -160,6 +190,14 @@
           };
           if (layer.title === "Maximum Extent of the Hot Zone") {
              layer.definitionExpression = Scenario_SQL;
+             layer
+              .when(() => {
+                return layer.queryExtent();
+              })
+              .then((response) => {
+                view.goTo(response.extent);
+              });
+
           };
          });
       });
@@ -168,13 +206,21 @@
       var myZoom = 11;
       const view = new MapView({
         map,
-        zoom: myZoom,
-        center: cityCenter, // longitude, latitude
+        // zoom: myZoom,
+        // center: cityCenter, // longitude, latitude
         container: "viewDiv",
         padding: {
           left: 49
         }
       });
+
+    //   view.when(() => {
+    //     map.layers.forEach((layer)=>{
+    //       if (layer.title === "Maximum Extent of the Hot Zone") {
+    //         view.goTo(layer.queryExtent());
+    //       };
+    //   })
+    // });
 
       view.ui.move("zoom", "top-left");
 
@@ -206,7 +252,7 @@
 
       map.when(() => {
         const { title, description, thumbnailUrl, avgRating } = map.portalItem;
-        document.querySelector("#header-title").textContent = title;
+        document.querySelector("#header-title").textContent = mapTitle;
         document.querySelector("#item-description").innerHTML = description;
         document.querySelector("#item-thumbnail").src = thumbnailUrl;
         document.querySelector("#item-rating").value = avgRating;
