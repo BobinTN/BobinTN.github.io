@@ -326,14 +326,15 @@
       const homeBtn = new Home({
         view: view
       })
-      /* const ccWidget = new CoordinateConversion({
+
+      const ccWidget = new CoordinateConversion({
               view: view
-          }); */
+          });
 
       view.ui.move("zoom", "top-left");
       view.ui.add(homeBtn, "top-left");
       view.ui.add(measurement, "bottom-right");
-      /* view.ui.add(ccWidget, "bottom-right") */
+      view.ui.add(ccWidget, "bottom-right")
       const searchWidget = new Search({
        view,
        container: "search-container"
