@@ -6,9 +6,13 @@
     <title>App: City Planning Resources ND</title>
     <script src="https://js.arcgis.com/calcite-components/1.11.0/calcite.esm.js" type="module"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.11.0/calcite.css" />
-    <script src="https://js.arcgis.com/4.27/"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.28/"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css" />
     <link rel="shortcut icon" href="#">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
   </head>
   <style>
     html,
@@ -16,8 +20,8 @@
     #viewDiv {
       padding: 0;
       margin: 0;
-      height: 100%;
-      width: 100%;
+      height: 95%;
+      width: 99%;
     }
     body {
       display: flex;
@@ -28,18 +32,42 @@
       justify-self: center;
     }
     h1 {
-      font-size: 20px;
+      font-size: 28px;
       color: white;
     }
     #header-title {
       margin-left: 1rem;
       margin-right: 0rem;
-      margin-top: 0rem;
-      height: 20px;
+      margin-top: 0.15rem;
+      margin-bottom: 0.7rem;
+      height: 35px;
     }
     #info-content {
       padding: 0.75rem;
+      width: 300px;
+      min-height: 800px;
+      height: 1800px;
+      max-height: 1800px;
     }
+    #toolbarDiv {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+      
+        cursor: default;
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+      #infoDiv {
+        position: absolute;
+        bottom: 45px;
+        left: 100px;
+      }
+      #infoDiv input {
+        border: none;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px;
+      }
     calcite-rating {
       margin-top: 0.25rem;
     }
@@ -47,9 +75,9 @@
       /* --calcite-ui-background: #f00; */
       --calcite-ui-foreground-1: #566373;
     }
-    /* calcite-action-bar {
+    calcite-action-bar {
       --calcite-ui-foreground-1: #eff1f3; 
-    } */
+    }
     calcite-action {
       --calcite-ui-foreground-1: rgb(255, 255, 255);
       --calcite-ui-text-3:var(--calcite-ui-text-3)
@@ -64,28 +92,51 @@
       font-size: 20px;
       color: white;
     } */
+    .esri-widget--button.active,
+    .esri-widget--button.active:hover,
+    .esri-widget--button.active:focus {
+      cursor: default;
+      background-color: #999696;
+    }
+    .esri-widget--button.active path,
+    .esri-widget--button.active:hover path,
+    .esri-widget--button.active:focus path {
+       fill: #E4E4E4;
+    }
+    .esri-widget--button {
+      width: 42px;
+      height: 42px;
+      font-size: 24px;     
+    }‍‍‍‍‍‍‍
   </style>
    <!-- <body  class="calcite-mode-dark"> -->
   <body>
     <calcite-loader></calcite-loader>
     <calcite-shell content-behind hidden>
-      <h1 id="header-title" slot="header">
+      <h1 id="header-title">
         <!-- Dynamically populated -->
       </h1>
-       <calcite-shell-panel slot="panel-start" display-mode="float">
-        <calcite-action-bar slot="action-bar">
-          <calcite-action data-action-id="layers" icon="layers" text="Layers"></calcite-action>
-          <calcite-action data-action-id="basemaps" icon="basemap" text="Basemaps"></calcite-action>
-          <calcite-action data-action-id="legend" icon="legend" text="Legend"></calcite-action>
-          <calcite-action data-action-id="bookmarks" icon="bookmark" text="Bookmarks"></calcite-action>
-          <calcite-action data-action-id="print" icon="print" text="Print"></calcite-action>
-          <calcite-action data-action-id="information" icon="information" text="Information"></calcite-action>
-        </calcite-action-bar>
 
+       <calcite-shell-panel heading="Content" slot="panel-end" display-mode="float" layout="horizontal">
+        <calcite-action-bar slot="action-bar">
+          <calcite-action data-action-id="information" icon="information" text="Information"></calcite-action>
+          <calcite-action data-action-id="legend" icon="legend" text="Legend"></calcite-action>
+          <calcite-action data-action-id="layers" id="layers" icon="layers" text="Layers"></calcite-action>
+          <calcite-action data-action-id="basemaps" icon="basemap" text="Basemaps"></calcite-action>
+          <calcite-action data-action-id="bookmarks" icon="bookmark" text="Bookmarks"></calcite-action>
+          <calcite-action data-action-id="search" icon="search" text="Search"></calcite-action>
+          <!-- <calcite-action data-action-id="print" icon="print" text="Print"></calcite-action> -->
+        </calcite-action-bar>
+        <calcite-tooltip label="Layers" reference-element="layers">
+          <span>Map Layers</span>
+      </calcite-tooltip>
         <!-- Map-specific panels (each one provides a div for a ArcGIS Maps SDK for JavaScript widget) -->
-        <calcite-panel heading="Layers" height-scale="l" data-panel-id="layers" hidden>
+        <calcite-panel heading="Layers" height-scale="l" data-panel-id="layers" hidden title="Layers">
           <div id="layers-container"></div>
         </calcite-panel>
+        <calcite-panel heading="Search" height-scale="l" data-panel-id="search" hidden>
+          <div id="search-container"></div>
+        </calcite-panel>       
         <calcite-panel heading="Basemaps" height-scale="l" data-panel-id="basemaps" hidden>
           <div id="basemaps-container"></div>
         </calcite-panel>
@@ -95,40 +146,63 @@
         <calcite-panel heading="Bookmarks" height-scale="l" data-panel-id="bookmarks" hidden>
           <div id="bookmarks-container"></div>
         </calcite-panel>
-        <calcite-panel heading="Print" height-scale="l" data-panel-id="print" hidden>
+        <!-- <calcite-panel heading="Print" height-scale="l" data-panel-id="print" hidden>
           <div id="print-container"></div>
-        </calcite-panel>
+        </calcite-panel> -->
 
         <!-- Info panel (populates with info from the web map) -->
-        <calcite-panel heading="Details" data-panel-id="information" hidden>
+        <calcite-panel heading="About" data-panel-id="information" height-scale="0.5" hidden>
           <div id="info-content">
-            <img id="item-thumbnail" alt="webmap thumbnail" />
             <div id="item-description">
               <!-- Dynamically populated -->
             </div>
-            <calcite-label layout="inline">
+            <img src="./Images/CPR_App_functionality.jpg" id="img-AppFunctions" alt="webmap thumbnail" />
+            <!-- <calcite-label layout="inline">
               <b>Rating:</b>
               <calcite-rating id="item-rating" read-only>
-                <!-- Dynamically populated -->
+                Dynamically populated
               </calcite-rating>
-            </calcite-label>
+            </calcite-label> -->
           </div>
         </calcite-panel>
       </calcite-shell-panel>
       <div id="viewDiv"></div>
+      <div id="infoDiv">
+        <!-- <input
+          class="esri-component esri-widget--button esri-widget esri-interactive"
+          type="button"
+          id="switch-btn"
+          value="3D"
+        /> -->
+      <div id="toolbarDiv" class="esri-component esri-widget">
+        <button id="distance" class="esri-widget--button esri-interactive esri-icon-measure-line" title="Distance Measurement Tool">
+        </button>
+        <button id="area" class="esri-widget--button esri-interactive esri-icon-measure-area" title="Area Measurement Tool">
+        </button>
+        <button id="clear" class="esri-widget--button esri-interactive esri-icon-trash" title="Clear Measurements">
+        </button>
+      </div>
     </calcite-shell>
   </body>
   <script>
     require([
       "esri/WebMap",
       "esri/views/MapView",
+      "esri/widgets/Home",
       "esri/widgets/Bookmarks",
+      "esri/Basemap",
       "esri/widgets/BasemapGallery",
       "esri/widgets/LayerList",
       "esri/widgets/Legend",
       "esri/widgets/Print",
-      "esri/config"
-    ], function(WebMap, MapView, Bookmarks, BasemapGallery, LayerList, Legend, Print, esriConfig) {
+      "esri/config",
+      "esri/Viewpoint",
+      "esri/widgets/Search",
+      "esri/widgets/Measurement",
+      "esri/widgets/CoordinateConversion",
+
+    ], function(WebMap, MapView, Home, Bookmarks, Basemap, BasemapGallery, LayerList, Legend, 
+      Print, esriConfig, Viewpoint, Search, Measurement, CoordinateConversion) {
       esriConfig.portalUrl = "https://arcgis.demo.preptoolkit.org/portal";
       const webmapId = new URLSearchParams(window.location.search).get("webmap")
         ?? "bffb830efcee476eabec7396e64c9cb0";  //DEMO Portal
@@ -147,6 +221,9 @@
       console.log("cityCenter: " + cityLon.toString() + ", " + cityLat.toString());
       var cityCenter = [cityLon,cityLat];
       var cityYield = params.get("yieldType");
+      var myBl = "false";
+      if (cityYield == "100 kt-5000ft" || cityYield == "1Mt"){ myBl = "true";}
+      else {myBl = "false";}
       console.log("cityYield: " + cityYield);
       var HZYield = cityYield.replace(/\s+/g, '');
       var cityWeather = params.get("weatherType");
@@ -167,6 +244,8 @@
       var HZ_SQL = "Scenario = '" + cityAbbr + "'";
       console.log("HZ_SQL: " + HZ_SQL); 
 
+   
+
       const map = new WebMap({
         portalItem: {
           id: webmapId
@@ -174,35 +253,52 @@
       });
 
       var DetLoc;
+      var myExt;
       map.loadAll().then(()=>{
       // loop through all operational layers in your map
          map.layers.forEach((layer)=>{
-           //console.log("layer.id", layer.id, layer);
-           // check your layer here
           if (layer.title === "Detonation_Locations") {
              layer.definitionExpression = DL_SQL;
           };
           if (layer.title === "Damage_Zones") {
              layer.definitionExpression = DZ_SQL;
+             if (myBl == "true"){ 
+              layer
+              .when(() => {
+                return layer.queryExtent();
+              })
+              .then((response) => {
+                myExt = response.extent;
+                view.goTo(myExt);
+                homeBtn.viewpoint = new Viewpoint({
+                  targetGeometry: myExt
+                });
+               });
+             }
           };
           if (layer.title === "Dangerous Radiation Zones") {
              layer.definitionExpression = Scenario_SQL;
           };
           if (layer.title === "Maximum Extent of the Hot Zone") {
              layer.definitionExpression = Scenario_SQL;
-             layer
-              .when(() => {
-                return layer.queryExtent();
-              })
-              .then((response) => {
-                view.goTo(response.extent);
-              });
-
+             if (myBl == "false"){ 
+              layer
+                .when(() => {
+                   return layer.queryExtent();
+                })
+                .then((response) => {
+                  myExt = response.extent;
+                  view.goTo(myExt);
+                  homeBtn.viewpoint = new Viewpoint({
+                      targetGeometry: myExt
+                  });
+                });
+              }
           };
          });
       });
 
-
+ 
       var myZoom = 11;
       const view = new MapView({
         map,
@@ -222,10 +318,30 @@
     //   })
     // });
 
-      view.ui.move("zoom", "top-left");
+      // Create new instance of the Measurement widget
+      const measurement = new Measurement({
+        view:view
+      })
 
+      const homeBtn = new Home({
+        view: view
+      })
+      /* const ccWidget = new CoordinateConversion({
+              view: view
+          }); */
+
+      view.ui.move("zoom", "top-left");
+      view.ui.add(homeBtn, "top-left");
+      view.ui.add(measurement, "bottom-right");
+      view.ui.add(ccWidget, "bottom-right")
+      const searchWidget = new Search({
+       view,
+       container: "search-container"
+      });
+            
       const basemaps = new BasemapGallery({
         view,
+        //source: [Basemap.portalItem = "273bf8d5c8ac400183fc24e109d20bcf", Basemap.fromId("topo"), Basemap.fromId("streets-relief-vector")],
         container: "basemaps-container"
       });
 
@@ -245,18 +361,23 @@
         container: "legend-container"
       });
 
-      const print = new Print({
-        view,
-        container: "print-container"
-      });
+      // const print = new Print({
+      //   view,
+      //   container: "print-container"
+      // });
 
       map.when(() => {
-        const { title, description, thumbnailUrl, avgRating } = map.portalItem;
-        document.querySelector("#header-title").textContent = mapTitle;
-        document.querySelector("#item-description").innerHTML = description;
-        document.querySelector("#item-thumbnail").src = thumbnailUrl;
-        document.querySelector("#item-rating").value = avgRating;
-
+         const { title, description, thumbnailUrl, avgRating } = map.portalItem;
+         document.querySelector("#header-title").textContent = mapTitle;
+         document.querySelector("#item-description").innerHTML = description;
+        // document.querySelector("#item-thumbnail").src = thumbnailUrl;
+        // document.querySelector("#item-rating").value = avgRating;
+        
+        // map.layers.forEach((layer)=>{
+        //   if (layer.title === "Maximum Extent of the Hot Zone") {
+        //     // view.goTo(layer.queryExtent());
+        //   };
+        // })
         let activeWidget;
 
         const handleActionBarClick = ({ target }) => {
@@ -293,6 +414,44 @@
         document.querySelector("calcite-shell").hidden = false;
         document.querySelector("calcite-loader").hidden = true;
 
+        // Set-up event handlers for buttons and click events
+        //const switchButton = document.getElementById("switch-btn");
+        const distanceButton = document.getElementById('distance');
+        const areaButton = document.getElementById('area');
+        const clearButton = document.getElementById('clear');
+
+        // switchButton.addEventListener("click", () => {
+        //   switchView();
+        // });
+        distanceButton.addEventListener("click", () => {
+          distanceMeasurement();
+        });
+        areaButton.addEventListener("click", () => {
+          areaMeasurement();
+        });
+        clearButton.addEventListener("click", () => {
+          clearMeasurements();
+        });
+
+        // Call the appropriate DistanceMeasurement2D or DirectLineMeasurement3D
+        function distanceMeasurement() {
+          const type = view.type;
+          measurement.activeTool = type.toUpperCase() === "2D" ? "distance" : "direct-line";
+          distanceButton.classList.add("active");
+          areaButton.classList.remove("active");
+        }
+        // Call the appropriate AreaMeasurement2D or AreaMeasurement3D
+        function areaMeasurement() {
+          measurement.activeTool = "area";
+          distanceButton.classList.remove("active");
+          areaButton.classList.add("active");
+        }
+        // Clears all measurements
+        function clearMeasurements() {
+          distanceButton.classList.remove("active");
+          areaButton.classList.remove("active");
+          measurement.clear();
+        }
       });
     });
   </script>

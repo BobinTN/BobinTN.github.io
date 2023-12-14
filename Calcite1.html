@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <script type="module" src=https://js.arcgis.com/calcite-components/1.11.0/calcite.esm.js></script>
+    <link rel="stylesheet" type="text/css" href=https://js.arcgis.com/calcite-components/1.11.0/calcite.css />
+</head>
+<style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      display: flex;
+
+    }
+</style>
+<body>
+ 
+    <calcite-shell>
+        <!-- <calcite-shell-panel slot="panel-start" position="start" id="shell-panel-start">
+            <calcite-action-bar slot="action-bar">
+                <calcite-action text="Save" icon="save" indicator></calcite-action>
+                <calcite-action active icon="map" text="Map"></calcite-action>
+                <calcite-action icon="layer" text="Layer"></calcite-action>
+            </calcite-action-bar>
+            <calcite-panel heading="Map" id="panel-start">
+                <calcite-block heading="Block 1" collapsible></calcite-block>
+            </calcite-panel>
+        </calcite-shell-panel> -->
+        <calcite-shell-panel slot="panel-end" position="end" layout="horizontal" id="shell-panel-end" collapsed>
+            <calcite-action-bar slot="action-bar">
+                <calcite-action text="Layer" icon="sliders-horizontal"></calcite-action>
+                <calcite-action text="Styles" icon="shapes"></calcite-action>
+                <calcite-action text="Filter" icon="layer-filter"></calcite-action>
+                <calcite-action text="Configure" icon="popup"></calcite-action>
+            </calcite-action-bar>
+            <calcite-panel heading id="panel-end" closable closed>
+                <calcite-block heading="Block 1" collapsible></calcite-block>
+            </calcite-panel>
+        </calcite-shell-panel>
+        <calcite-panel heading="Content">
+            <div id="viewDiv">
+                <p>Hello this is the viewDiv.</p>
+        
+                <p>how</p>
+                 
+                <p>many </p>
+                
+                <p>lines?</p>
+            </div>
+        </calcite-panel>
+    </calcite-shell>
+ 
+</body>
+
+<script>
+    const shellPanelStart = document.getElementById("shell-panel-start");
+    const shellPanelEnd = document.getElementById("shell-panel-end");
+    const panelStart = document.getElementById("panel-start");
+    const panelEnd = document.getElementById("panel-end");
+
+    const actionsStart = shellPanelStart?.querySelectorAll("calcite-action");
+    const actionsEnd = shellPanelEnd?.querySelectorAll("calcite-action");
+
+    actionsStart?.forEach(el => {
+        el.addEventListener("click", function(event) {
+            actionsStart?.forEach(action => (action.active = false));
+            el.active = panelStart.closed;
+            shellPanelStart.collapsed = !shellPanelStart.collapsed;
+            panelStart.closed = !panelStart.closed;
+            panelStart.heading = el.text;
+        });
+    });
+
+    panelEnd?.addEventListener("calcitePanelClose", function(event) {
+        actionsEnd.forEach(action => (action.active = false));
+        shellPanelEnd.collapsed = true;
+    });
+
+    actionsEnd?.forEach(el => {
+        el.addEventListener("click", function(event) {
+            actionsEnd?.forEach(action => (action.active = false));
+            el.active = panelEnd.closed;
+            shellPanelEnd.collapsed = !shellPanelEnd.collapsed;
+            panelEnd.closed = !panelEnd.closed;
+            panelEnd.heading = el.text;
+        });
+    });
+</script>
+
+</html>
